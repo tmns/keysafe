@@ -1,31 +1,74 @@
 {
   "name": "keysafe",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-scripts": "3.0.1"
-  },
+  "version": "1.0.0",
+  "description": "a simple safe for storing all your passwords",
+  "main": "index.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build": "babel server --out-dir dist",
+    "test": "cross-env NODE_ENV=testing jest --detectOpenHandles",
+    "server": "nodemon --exec yarn restart",
+    "client": "npm start --prefix client",
+    "client-install": "npm install --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "restart": "rimraf dist && yarn build && yarn start",
+    "start": "node dist/index.js"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tmns/keysafe.git"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+  "keywords": [
+    "javascript",
+    "react",
+    "mongodb",
+    "mongoose",
+    "polka",
+    "redux",
+    "key",
+    "safe",
+    "password",
+    "generator"
+  ],
+  "jest": {
+    "verbose": true,
+    "testURL": "http://localhost/",
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "<rootDir>/test-db-setup.js"
     ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "testPathIgnorePatterns": [
+      "dist/"
+    ],
+    "restoreMocks": true
+  },
+  "author": "tmns <tmn5@pm.me>",
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/tmns/keysafe/issues"
+  },
+  "homepage": "https://github.com/tmns/keysafe#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^24.8.0",
+    "concurrently": "^4.1.1",
+    "cross-env": "^5.2.0",
+    "nodemon": "^1.19.1",
+    "rimraf": "^2.6.3",
+    "supertest": "^4.0.2"
+  },
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "connect-mongodb-session": "^2.2.0",
+    "cors": "^2.8.5",
+    "cuid": "^2.1.6",
+    "express-session": "^1.16.2",
+    "lodash": "^4.17.15",
+    "mongoose": "^5.6.6",
+    "polka": "^0.5.2"
   }
 }
