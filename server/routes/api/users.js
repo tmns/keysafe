@@ -12,4 +12,4 @@ const router = express.Router();
 // @access Public
 router.get('/test', (req, res) => res.json({ msg: 'users works' }));
 
- module.exports = router;
+export default router;

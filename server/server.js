@@ -6,7 +6,7 @@ import cors from 'cors';
 
 import * as config from './config/config';
 import { connect } from './db';
-const users = require('./routes/api/users');
+import users from './routes/api/users';
 
 let MongoDBStore = require('connect-mongodb-session')(session);
 
@@ -58,7 +58,7 @@ async function start() {
   app.use(bodyParser.json());
 
   app.use(sessionMW, one, two)
-  
+
   app.use('/api/users', users)
   
   app.get('/', basic);
