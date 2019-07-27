@@ -6,6 +6,7 @@ import cors from 'cors';
 
 import * as config from './config/config';
 import { connect } from './db';
+import userRouter from './routes/api/users';
 
 let MongoDBStore = require('connect-mongodb-session')(session);
 
@@ -30,6 +31,12 @@ async function start() {
     },
     store
   });
+
+  try {
+    await connect(config.DB_URL);
+  } catch (err) {
+    console.log(`Error connecting to db: ${err}`);
+  }
   
   function one(req, res, next) {
     req.hello = 'world';
@@ -41,22 +48,25 @@ async function start() {
     next();
   }
 
-  try {
-    await connect(config.DB_URL);
-  } catch (err) {
-    console.log(`Error connecting to db: ${err}`);
-  }
+  const app = polka();
+
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.json());
+
+  app.use(sessionMW, one, two)
   
-  polka()
-    .use(sessionMW, one, two)
-    .get('/users/:id', (req, res) => {
-      console.log(`-> Hello, ${req.hello}`);
-      res.end(`User: ${req.params.id}`);
-    })
-    .listen(3000, err => {
-      if (err) throw err;
-      console.log('> Running on localhost:3000');
-    });  
+  
+  app.get('/users/:id', (req, res) => {
+    console.log(`-> Hello, ${req.hello}`);
+    res.end(`User: ${req.params.id}`);
+  })
+  
+  app.use('api/users', userRouter)
+    
+  app.listen(3000, err => {
+    if (err) throw err;
+    console.log('> Running on localhost:3000');
+  });  
 }
 
 export default start;
