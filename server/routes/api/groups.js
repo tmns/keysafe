@@ -58,7 +58,7 @@ router.put('/:id', sessionChecker, async (req ,res) => {
   const { errors, isValid } = validateGroupInput(req.body);
   
   if (!isValid) {
-    return res.status(404).json(errors);
+    return res.status(400).json(errors);
   }
 
   const group = await Group.findOne({ _id: req.params.id, createdBy: req.session.userId });

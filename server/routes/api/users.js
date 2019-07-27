@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import { User } from '../../models/User';
 import validateRegisterInput from '../../validation/register';
 import validateLoginInput from '../../validation/login';
+import validateUpdateUserInput from '../../validation/updateUser';
 import { sessionChecker } from '../../utils/auth';
 
 const router = express.Router();
@@ -12,6 +13,10 @@ const router = express.Router();
 // @desc Register user
 // @access Public
 router.post('/register', async (req, res) => {
+  if (req.session.user) {
+    return res.status(400).json({ error: 'User already authenticated' })
+  }
+
   const { errors, isValid } = validateRegisterInput(req.body);
 
   if (!isValid) {
@@ -22,24 +27,21 @@ router.post('/register', async (req, res) => {
   
   if (user) {
     return res.status(400).json({ username: 'Username already exists' });
-  } else {
-    const newUser = new User({
-      username: req.body.username,
-      password: req.body.password
-    });
+  }
 
-    bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(newUser.password, salt, async (err, hash) => {
-        if (err) throw err;
-        newUser.password = hash;
-        try {
-          const user = await newUser.save();
-          res.json(user);
-        } catch(err) {
-          console.log(err);
-        }
-      })
-    })
+  const salt = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(req.body.password, salt);
+    
+  const newUser = new User({
+    username: req.body.username,
+    password: hash
+  });
+  
+  try {
+    const user = await newUser.save();
+    res.json(user);
+  } catch(err) {
+    console.log(err);
   }
 })
 
@@ -95,6 +97,51 @@ router.get('/current', sessionChecker, (req, res) => {
 router.post('/logout', sessionChecker, (req, res) => {
   req.session.destroy();
   res.json({ message: 'Successfully logged out' });
+})
+
+// @route PUT api/users/current
+// @desc Update user
+// @access Private
+router.put('/update', sessionChecker, async (req, res) => {
+  const { errors, isValid } = validateUpdateUserInput(req.body);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  var user = await User.findById(req.session.userId);
+
+  const hashesMatch = await bcrypt.compare(req.body.currentPassword, user.password);
+  
+  if (!hashesMatch) {
+    errors.password = 'Incorrect password.';
+    return res.status(400).json(errors);
+  }
+
+  if (req.body.username != '') {
+    const existingUser = await User.findOne({ username: req.body.username });
+  
+    // if username already exists and it is not the current user's username
+    if (existingUser && existingUser.username != req.session.user) {
+      return res.status(400).json({ username: 'Username already exists' });
+    }
+
+    user.username = req.body.username;
+  } 
+  
+  if (req.body.newPassword != '' ) {
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(req.body.newPassword, salt);
+
+    user.password = hash;
+  }
+
+  try {
+    const updatedUser = await user.save();
+    res.json(updatedUser);
+  } catch(err) {
+    console.log(err);
+  }
 })
 
 export default router;
