@@ -1,19 +1,15 @@
-import polka from 'polka';
+import express from 'express';
 import bcrypt from 'bcrypt';
 
 import { User } from '../../models/User';
 import validateRegisterInput from '../../validation/register';
 import validateLoginInput from '../../validation/login';
 
-const userRouter = polka();
+const router = express.Router();
 
 // @route GET api/users/test
 // @desc Test users route
 // @access Public
-userRouter.get('/test', (req, res) => {
-    console.log('made it')
-    return res.json({ msg: 'users works' })
-  }  
-);
+router.get('/test', (req, res) => res.json({ msg: 'users works' }));
 
-export default userRouter;
+ module.exports = router;

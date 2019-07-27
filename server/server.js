@@ -1,4 +1,4 @@
-import polka from 'polka';
+import express from 'express';
 import session from 'express-session';
 import bodyParser from 'body-parser';
 import path from 'path';
@@ -6,7 +6,7 @@ import cors from 'cors';
 
 import * as config from './config/config';
 import { connect } from './db';
-import userRouter from './routes/api/users';
+const users = require('./routes/api/users');
 
 let MongoDBStore = require('connect-mongodb-session')(session);
 
@@ -48,20 +48,26 @@ async function start() {
     next();
   }
 
-  const app = polka();
+  function basic(req, res) {
+    res.end(`Main: Hello from ${req.method} ${req.url}`);
+  }
+
+  const app = express();
 
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
 
   app.use(sessionMW, one, two)
   
+  app.use('/api/users', users)
+  
+  app.get('/', basic);
   
   app.get('/users/:id', (req, res) => {
     console.log(`-> Hello, ${req.hello}`);
     res.end(`User: ${req.params.id}`);
   })
   
-  app.use('api/users', userRouter)
     
   app.listen(3000, err => {
     if (err) throw err;
