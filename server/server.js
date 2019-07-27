@@ -11,6 +11,17 @@ import users from './routes/api/users';
 let MongoDBStore = require('connect-mongodb-session')(session);
 
 async function start() {
+  try {
+    await connect(config.DB_URL);
+  } catch (err) {
+    console.log(`Error connecting to db: ${err}`);
+  }
+
+  const app = express();
+
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.json());
+  
   let store = new MongoDBStore({
     uri: config.DB_URI,
     collection: 'sessions'
@@ -20,7 +31,7 @@ async function start() {
     console.log(error);
   })
 
-  let sessionMW = session({
+  app.use(session({
     name: config.SESS_NAME,
     secret: config.SESS_SECRET,
     resave: true,
@@ -30,44 +41,9 @@ async function start() {
       maxAge: config.SESS_LIFETIME
     },
     store
-  });
-
-  try {
-    await connect(config.DB_URL);
-  } catch (err) {
-    console.log(`Error connecting to db: ${err}`);
-  }
-  
-  function one(req, res, next) {
-    req.hello = 'world';
-    next();
-  }
-  
-  function two(req, res, next) {
-    req.foo = '...needs better demo';
-    next();
-  }
-
-  function basic(req, res) {
-    res.end(`Main: Hello from ${req.method} ${req.url}`);
-  }
-
-  const app = express();
-
-  app.use(bodyParser.urlencoded({ extended: false }));
-  app.use(bodyParser.json());
-
-  app.use(sessionMW, one, two)
+  }));
 
   app.use('/api/users', users)
-  
-  app.get('/', basic);
-  
-  app.get('/users/:id', (req, res) => {
-    console.log(`-> Hello, ${req.hello}`);
-    res.end(`User: ${req.params.id}`);
-  })
-  
     
   app.listen(3000, err => {
     if (err) throw err;
