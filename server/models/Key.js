@@ -28,7 +28,7 @@ const KeySchema = new Schema(
       ref: 'users',
       required: true
     },
-    inGroups: {
+    inGroup: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'groups',
       required: true
