@@ -71,12 +71,31 @@ router.post('/login', async (req, res) => {
   const hashesMatch = await bcrypt.compare(password, user.password);
   
   if (hashesMatch) {
-    req.session.user = user.usernmae;
+    req.session.user = user.username;
+    req.session.userId = user.id;
     res.json({ id: user.id, username: user.username });
   } else {
     errors.password = 'Incorrect password.';
     return res.status(400).json(errors);
   }
+})
+
+// @route GET api/users/current
+// @desc Return current user
+// @access Private
+router.get('/current', sessionChecker, (req, res) => {
+  res.json({
+    id: req.session.userId,
+    username: req.session.user
+  })
+})
+
+// @route POST api/users/logout
+// @desc Logout user
+// @access Private
+router.post('/logout', sessionChecker, (req, res) => {
+  req.session.destroy();
+  res.json({ message: 'Successfully logged out' });
 })
 
 export default router;
