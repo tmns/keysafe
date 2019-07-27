@@ -9,7 +9,14 @@ const GroupSchema = new Schema(
       required: true,
       minlength: 1,
       maxlength: 32
+    },
+    createdBy: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'users',
+      required: true
     }
   },
   { timestamps: true }
 )
+
+export const Group = mongoose.model('group', GroupSchema);

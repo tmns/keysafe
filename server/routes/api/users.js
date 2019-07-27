@@ -8,11 +8,6 @@ import { sessionChecker } from '../../utils/auth';
 
 const router = express.Router();
 
-// @route GET api/users/test
-// @desc Test users route
-// @access Public
-router.get('/test', (req, res) => res.json({ msg: 'users works' }));
-
 // @route POST api/users/register
 // @desc Register user
 // @access Public

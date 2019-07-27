@@ -2,7 +2,7 @@ import Validator from 'validator';
 import isEmpty from './is_empty';
 
 function validateLoginInput(data) {
-  let errors = {};
+  var errors = {};
 
   data.username = !isEmpty(data.username) ? data.username : '';
   data.password = !isEmpty(data.password) ? data.password : '';

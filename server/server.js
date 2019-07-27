@@ -7,6 +7,7 @@ import cors from 'cors';
 import * as config from './config/config';
 import { connect } from './db';
 import users from './routes/api/users';
+import groups from './routes/api/groups';
 
 let MongoDBStore = require('connect-mongodb-session')(session);
 
@@ -43,7 +44,8 @@ async function start() {
     store
   }));
 
-  app.use('/api/users', users)
+  app.use('/api/users', users);
+  app.use('/api/groups', groups);
     
   app.listen(3000, err => {
     if (err) throw err;
