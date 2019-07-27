@@ -52,6 +52,10 @@ router.post('/register', async (req, res) => {
 // @desc Login user
 // @access Public
 router.post('/login', async (req, res) => {
+  if (req.session.user) {
+    return res.status(400).json({ error: 'User already authenticated' })
+  }
+  
   const username = req.body.username;
   const password = req.body.password;
 
