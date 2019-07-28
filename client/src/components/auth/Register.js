@@ -82,7 +82,6 @@ function Register({ errorsFromServer, history, registerUser, clearErrors }) {
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth,
   errorsFromServer: state.errors
 })
 

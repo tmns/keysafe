@@ -1,27 +1,27 @@
 import React from 'react';
-import { Provider } from 'react-redux';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import store from './store';
+import AuthRoute from './components/common/AuthRoute';
+import PrivateRoute from './components/common/PrivateRoute';
 import Navbar from './components/layout/Navbar';
 import Landing from './components/layout/Landing';
 import Footer from './components/layout/Footer';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
+import Dashboard from './components/dashboard/Dashboard';
 
 function App() {
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <div className="min-h-screen bg-teal-700 flex flex-col">
-          <Navbar />
-          <Route exact path='/' component={Landing} />
-          <Route exact path='/register' component={Register} />
-          <Route exact path='/login' component={Login} />
-          <Footer />
-        </div>
-      </BrowserRouter>
-    </Provider>
+    <BrowserRouter>
+      <div className="min-h-screen bg-teal-700 flex flex-col">
+        <Navbar />
+        <Route exact path='/' component={Landing} />
+        <AuthRoute exact path='/register' component={Register} />
+        <AuthRoute exact path='/login' component={Login} />
+        <PrivateRoute exact path='/dashboard' component={Dashboard} />
+        <Footer />
+      </div>
+    </BrowserRouter>
   );
 }
 

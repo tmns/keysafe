@@ -1,6 +1,9 @@
 import React from "react";
+import { connect } from 'react-redux';
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+
+import { loginUser } from '../../actions/authActions';
 
 const RegisterSchema = Yup.object().shape({
   username: Yup.string()
@@ -9,7 +12,7 @@ const RegisterSchema = Yup.object().shape({
     .required("A password is required"),
 });
 
-function Login() {
+function Login({ history, loginUser, errorsFromServer }) {
   return (
     <div className="w-full max-w-xs flex-auto mx-auto">
       <h1 className="text-white text-center text-5xl font-thin py-10">Login</h1>
@@ -20,8 +23,13 @@ function Login() {
         }}
         validationSchema={RegisterSchema}
         onSubmit={values => {
-          // same shape as initial values
-          console.log(values);
+          
+          const userData = {
+            username: values.username,
+            password: values.password
+          }
+
+          loginUser(userData, history);
         }}
       >
         {({ errors, touched }) => (
@@ -34,6 +42,7 @@ function Login() {
               {errors.username && touched.username ? (
                 <div>{errors.username}</div>
               ) : null}
+              {errorsFromServer.username && <div>{errorsFromServer.username}</div>}
             </div>
             <div className="mb-4">
               <label className="block text-teal-800 text-sm font-bold mb-2">
@@ -43,6 +52,7 @@ function Login() {
               {errors.password && touched.password ? (
                 <div>{errors.password}</div>
               ) : null}
+              {errorsFromServer.password && <div>{errorsFromServer.password}</div>}
             </div>
             <button className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full" type="submit">Submit</button>
           </Form>
@@ -52,4 +62,8 @@ function Login() {
   );
 }
 
-export default Login;
+const mapStateToProps = state => ({
+  errorsFromServer: state.errors
+})
+
+export default connect(mapStateToProps, { loginUser })(Login);

@@ -10,6 +10,24 @@ export const registerUser = (userData, history) => async dispatch => {
   }
 }
 
+export const loginUser = (userData, history) => async dispatch => {
+  try {
+    const res = await axios.post('/api/users/login', userData);
+    
+    dispatch(setCurrentUser({ user: res.data.username, userId: res.data.id }));
+    history.push('/dashboard');
+  } catch(err) {
+    dispatch({ type: GET_ERRORS, payload: err.response.data });
+  }
+}
+
+export const setCurrentUser = userData => {
+  return {
+    type: SET_CURRENT_USER, 
+    payload: userData
+  }
+}
+
 export const clearErrors = () => {
   return {
       type: CLEAR_ERRORS

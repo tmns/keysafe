@@ -49,7 +49,7 @@ async function start() {
     
   app.listen(config.SERVER_PORT, err => {
     if (err) throw err;
-    console.log('> Running on localhost:3000');
+    console.log(`> Running on localhost:${config.SERVER_PORT}`);
   });  
 }
 
