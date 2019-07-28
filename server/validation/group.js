@@ -1,7 +1,7 @@
 import Validator from 'validator';
 import isEmpty from './is_empty';
 
-function validateNewGroupInput(data) {
+function validateGroupInput(data) {
   var errors = {};
 
   data.name = !isEmpty(data.name) ? data.name : '';
@@ -20,4 +20,4 @@ function validateNewGroupInput(data) {
   }
 }
 
-export default validateNewGroupInput;
+export default validateGroupInput;

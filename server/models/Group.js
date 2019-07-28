@@ -14,7 +14,30 @@ const GroupSchema = new Schema(
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'users',
       required: true
-    }
+    },
+    keys: [
+      {
+        title: {
+          type: String,
+          required: true,
+          maxlength: 64
+        },
+        username: {
+          type: String,
+          maxlength: 64
+        },
+        password: {
+          type: String,
+          required: true,
+          minlength: 8,
+          maxlength: 64
+        },
+        url: {
+          type: String,
+          maxlength: 64
+        }
+      }
+    ]
   },
   { timestamps: true }
 )

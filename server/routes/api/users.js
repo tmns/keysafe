@@ -96,7 +96,7 @@ router.get('/current', sessionChecker, (req, res) => {
 // @access Private
 router.post('/logout', sessionChecker, (req, res) => {
   req.session.destroy();
-  res.json({ message: 'Successfully logged out' });
+  res.json({ success: true });
 })
 
 // @route PUT api/users/current

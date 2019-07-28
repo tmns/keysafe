@@ -2,6 +2,7 @@ import express from 'express';
 
 import { Group } from '../../models/Group';
 import validateGroupInput from '../../validation/group';
+import validateKeyInput from '../../validation/key';
 import { sessionChecker } from '../../utils/auth';
 
 const router = express.Router();
@@ -94,6 +95,36 @@ router.delete('/:id', sessionChecker, async (req, res) => {
     return res.status(400).json(err);
   }
 })
+
+// @route POST api/groups/key/:group_id
+// @desc Create a new key
+// @access Private
+router.post('/key/:group_id', sessionChecker, async (req, res) => {
+  const { errors, isValid } = validateKeyInput(req.body);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  const group = await Group.findOne({ _id: req.params.group_id, createdBy: req.session.userId });
+
+  if (!group) {
+    return res.status(404).json({ nogroupfound: 'No group found with that id' });
+  }
+
+  const newKey = {
+    title: req.body.title,
+    username: req.body.username,
+    password: req.body.password,
+    url: req.body.url
+  }
+
+  group.keys.unshift(newKey);
+
+  const groupWithKeyAdded = await group.save();
+  res.json(groupWithKeyAdded);
+})
+
 
 export default router;
 
