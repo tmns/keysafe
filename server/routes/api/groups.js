@@ -3,7 +3,9 @@ import express from 'express';
 import { Group } from '../../models/Group';
 import validateGroupInput from '../../validation/group';
 import validateKeyInput from '../../validation/key';
+import validateUpdateKeyInput from '../../validation/updateKey';
 import { sessionChecker } from '../../utils/auth';
+import { KeyObject } from 'crypto';
 
 const router = express.Router();
 
@@ -125,6 +127,40 @@ router.post('/key/:group_id', sessionChecker, async (req, res) => {
   res.json(groupWithKeyAdded);
 })
 
+// @route PUT api/groups/key/:group_id/:key_id
+// @desc Updates a key
+// @access Private
+router.put('/key/:group_id/:key_id', sessionChecker, async (req, res) => {
+  const { errors, isValid } = validateUpdateKeyInput(req.body);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  const group = await Group.findOne({ _id: req.params.group_id, createdBy: req.session.userId });
+
+  if (!group) {
+    return res.status(404).json({ nogroupfound: 'No group found with that id' });
+  }
+
+  let key = group.keys.filter(key => key._id.toString() == req.params.key_id)[0];
+
+  if (!key) {
+    return res.status(404).json({ nokeyfound: 'No key found with that id' });
+  }
+
+  key.title = req.body.title != '' ? req.body.title : key.title;
+  key.username = req.body.username != '' ? req.body.username : key.username;
+  key.password = req.body.password != '' ? req.body.password : key.password;
+  key.url = req.body.url != '' ? req.body.url : key.url;
+  
+  try {
+    const updatedGroup = await group.save();
+    res.json(updatedGroup);
+  } catch(err) {
+    console.log(err);
+  }
+})
 
 export default router;
 
