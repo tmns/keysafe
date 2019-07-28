@@ -6,6 +6,7 @@ import validateRegisterInput from '../../validation/register';
 import validateLoginInput from '../../validation/login';
 import validateUpdateUserInput from '../../validation/updateUser';
 import { sessionChecker } from '../../utils/auth';
+import { Group } from '../../models/Group';
 
 const router = express.Router();
 
@@ -99,10 +100,10 @@ router.post('/logout', sessionChecker, (req, res) => {
   res.json({ success: true });
 })
 
-// @route PUT api/users/current
+// @route PUT api/users
 // @desc Update user
 // @access Private
-router.put('/update', sessionChecker, async (req, res) => {
+router.put('/', sessionChecker, async (req, res) => {
   const { errors, isValid } = validateUpdateUserInput(req.body);
 
   if (!isValid) {
@@ -141,6 +142,35 @@ router.put('/update', sessionChecker, async (req, res) => {
     res.json(updatedUser);
   } catch(err) {
     console.log(err);
+  }
+})
+
+// @route DELETE api/users
+// @desc Delete a user
+// @access Private
+router.delete('/', sessionChecker, async (req, res) => {
+  let errors = {};
+
+  if (!req.body.password) {
+    errors.password = 'Password required';
+    return res.status(400).json(errors);
+  }
+
+  const user = await User.findById(req.session.userId);
+
+  const hashesMatch = await bcrypt.compare(req.body.password, user.password);
+  
+  if (!hashesMatch) {
+    errors.password = 'Incorrect password.';
+    return res.status(400).json(errors);
+  }
+
+  try {
+    await user.remove();
+    req.session.destroy();
+    res.json({ success: true });
+  } catch (err) {
+    return res.status(400).json(err);
   }
 })
 
