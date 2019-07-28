@@ -162,5 +162,31 @@ router.put('/key/:group_id/:key_id', sessionChecker, async (req, res) => {
   }
 })
 
+// @route DELETE /api/groups/key/:group_id/:key_id
+// @desc Delete a key
+// @access Private
+router.delete('/key/:group_id/:key_id', sessionChecker, async (req, res) => {
+  const group = await Group.findOne({ _id: req.params.group_id, createdBy: req.session.userId });
+
+  if (!group) {
+    return res.status(404).json({ nogroupfound: 'No group found with that id' });
+  }
+
+  if (group.keys.filter(key => key._id.toString() == req.params.key_id).length == 0) {
+    return res.status(404).json({ nokeyfound: 'No key found with that id' });
+  }
+
+  const indexToRemove = group.keys.map(key => key._id.toString()).indexOf(req.params.key_id);
+
+  group.keys.splice(indexToRemove, 1);
+
+  try {
+    const updatedGroup = await group.save();
+    res.json(updatedGroup);
+  } catch(err) {
+    console.log(err);
+  }
+})
+
 export default router;
 
