@@ -1,12 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faLock } from '@fortawesome/free-solid-svg-icons';
 
 function Navbar() {
   return (
     <div>
-      <nav className="flex items-center justify-between flex-wrap bg-teal-800 p-6">
+      <nav className="flex items-center justify-between flex-wrap bg-teal-800 p-4 border-transparent shadow-md">
         <div className="flex items-center flex-shrink-0 text-white mr-6">
-          <span className="font-semibold text-xl tracking-light">KeySafe</span>
+          <span className="font-semibold text-xl tracking-light">
+            <span className="pr-2"><FontAwesomeIcon icon={ faLock } /></span> KeySafe</span>
         </div>
         <div className="block md:hidden">
           <button className="flex items-center px-3 py-2 border rounded text-teal-400 hover:text-white hover:border-white">
@@ -27,6 +30,14 @@ function Navbar() {
               className="hidden md:inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
             >
               Login
+            </Link>
+          </div>
+          <div>
+            <Link
+              href="#"
+              className="hidden md:inline-block text-sm px-4 mx-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
+            >
+              Register
             </Link>
           </div>
         </div>
