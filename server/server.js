@@ -47,7 +47,7 @@ async function start() {
   app.use('/api/users', users);
   app.use('/api/groups', groups);
     
-  app.listen(3000, err => {
+  app.listen(config.SERVER_PORT, err => {
     if (err) throw err;
     console.log('> Running on localhost:3000');
   });  
