@@ -1,6 +1,10 @@
 import React from "react";
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+
+import { registerUser, clearErrors } from '../../actions/authActions';
 
 const RegisterSchema = Yup.object().shape({
   username: Yup.string()
@@ -16,7 +20,7 @@ const RegisterSchema = Yup.object().shape({
     .required("You must confirm your password")
 });
 
-function Register() {
+function Register({ errorsFromServer, history, registerUser, clearErrors }) {
   return (
     <div className="w-full max-w-xs flex-auto mx-auto">
       <h1 className="text-white text-center text-5xl font-thin py-10">Sign Up</h1>
@@ -28,8 +32,13 @@ function Register() {
         }}
         validationSchema={RegisterSchema}
         onSubmit={values => {
-          // same shape as initial values
-          console.log(values);
+          const newUser = {
+            username: values.username,
+            password: values.password,
+            confirmPassword: values.confirmPassword
+          }
+          clearErrors();
+          registerUser(newUser, history);
         }}
       >
         {({ errors, touched }) => (
@@ -42,6 +51,7 @@ function Register() {
               {errors.username && touched.username ? (
                 <div>{errors.username}</div>
               ) : null}
+              {errorsFromServer.username && <div>{errorsFromServer.username}</div>}
             </div>
             <div className="mb-4">
               <label className="block text-teal-800 text-sm font-bold mb-2">
@@ -51,6 +61,7 @@ function Register() {
               {errors.password && touched.password ? (
                 <div>{errors.password}</div>
               ) : null}
+              {errorsFromServer.password && <div>{errorsFromServer.password}</div>}
             </div>
             <div className="mb-6">
             <label className="block text-teal-800 text-sm font-bold mb-2">
@@ -60,6 +71,7 @@ function Register() {
               {errors.confirmPassword && touched.confirmPassword ? (
                 <div>{errors.confirmPassword}</div>
               ) : null}
+              {errorsFromServer.confirmPassword && <div>{errorsFromServer.confirmPassword}</div>}
             </div>
             <button className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full" type="submit">Submit</button>
           </Form>
@@ -69,4 +81,9 @@ function Register() {
   );
 }
 
-export default Register;
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errorsFromServer: state.errors
+})
+
+export default connect(mapStateToProps, { registerUser, clearErrors })(withRouter(Register));
