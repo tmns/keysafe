@@ -19,6 +19,9 @@ const UserSchema = new Schema(
       minlength: 8,
       maxlength: 64
     },
+    salt: {
+      type: String
+    }
   },
   { timeStamps: true }
 );

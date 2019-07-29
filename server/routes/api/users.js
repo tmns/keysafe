@@ -174,4 +174,9 @@ router.delete('/', sessionChecker, async (req, res) => {
   }
 })
 
+// @route POST api/users/salt
+// @desc Stores a user's salt
+// @access Private
+
+
 export default router;
