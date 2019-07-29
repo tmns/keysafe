@@ -5,7 +5,6 @@ import validateGroupInput from '../../validation/group';
 import validateKeyInput from '../../validation/key';
 import validateUpdateKeyInput from '../../validation/updateKey';
 import { sessionChecker } from '../../utils/auth';
-import { KeyObject } from 'crypto';
 
 const router = express.Router();
 
