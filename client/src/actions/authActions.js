@@ -21,6 +21,15 @@ export const loginUser = (userData, history) => async dispatch => {
   }
 }
 
+export const logoutUser = () => async dispatch => {
+  try {
+    await axios.post('/api/users/logout');
+    dispatch(setCurrentUser({}));
+  } catch(err) {
+    console.log(err);
+  }
+}
+
 export const setCurrentUser = userData => {
   return {
     type: SET_CURRENT_USER, 

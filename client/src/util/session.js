@@ -6,8 +6,10 @@ async function checkIfLoggedIn() {
     const res = await axios.get('/api/users/current');
     initialState = {
       auth: {
-        username: res.data.username,
-        userId: res.data.id,
+        user: {
+          username: res.data.username,
+          userId: res.data.id  
+        },
         isAuthenticated: true
       }
     }
