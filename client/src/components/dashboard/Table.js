@@ -52,7 +52,7 @@ function Table() {
         <div>
           <ul>
             {groups.map(group => (
-              <li key={group._id} className="p-4 w-full border-b">
+              <li key={group._id} className="p-4 w-full border-b hover:bg-teal-700 hover:text-white">
                 <button value={group._id} onClick={handleGroupClick}>
                   {group.name}
                 </button>
@@ -97,7 +97,7 @@ function Table() {
         </div>
         <div>
           {keys.map(key => (
-            <div key={key._id} className="flex justify-around pt-5 pb-3 border-b cursor-pointer">
+            <div key={key._id} className="flex justify-around pt-5 pb-3 border-b cursor-pointer hover:bg-teal-700 hover:text-white">
               <p>{key.title}</p>
               <p>{key.username}</p>
               <p>{key.url}</p>
