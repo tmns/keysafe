@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faCheck, faTimes, faPen } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 
 const GroupNameSchema = Yup.object().shape({
@@ -52,11 +50,13 @@ function Table() {
         <div>
           <ul>
             {groups.map(group => (
-              <li key={group._id} className="p-4 w-full border-b hover:bg-teal-700 hover:text-white">
-                <button value={group._id} onClick={handleGroupClick}>
-                  {group.name}
-                </button>
-              </li>
+                <li key={group._id} className="p-4 w-full border-b hover:bg-teal-700 hover:text-white">
+                  <button value={group._id} onClick={handleGroupClick}>
+                    {group.name}
+                  </button>
+                  <button className="float-right"><FontAwesomeIcon icon={ faTimes } /> </button>
+                  <button className="mr-5 float-right"><FontAwesomeIcon icon={ faPen } /> </button>
+                </li>
             ))}
           </ul>
         </div>
@@ -74,8 +74,8 @@ function Table() {
               <Form>
                 <div className="border-b border-b-2 border-teal-500 py-2">
                   <Field className="appearance-none bg-transparent border-none w-1/2 text-gray-700 mx-3 py-2 leading-tight focus:outline-none" type="text" placeholder="Group Name" aria-label="Group Name" name="groupName" />
-                  <button className="pl-2 pr-3" type="submit"><FontAwesomeIcon icon={ faCheck } /></button>
-                  <button className="pl-3" onClick={() => setState({...state, addingGroup: false})}><FontAwesomeIcon icon={ faTimes } /></button>
+                  <button className="ml-6" type="submit"><FontAwesomeIcon icon={ faCheck } /></button>
+                  <button className="ml-5" onClick={() => setState({...state, addingGroup: false})}><FontAwesomeIcon icon={ faTimes } /></button>
                   {errors.groupName && touched.groupName ? (
                   <div className="pl-5 py-2">{errors.groupName}</div> ) : null}
                 </div>
