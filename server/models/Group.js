@@ -29,7 +29,6 @@ const GroupSchema = new Schema(
         password: {
           type: String,
           required: true,
-          minlength: 8,
           maxlength: 64
         },
         url: {

@@ -20,7 +20,7 @@ function GroupModal(props) {
       }}>
       <div className="bg-white rounded shadow-md h-64 w-1/3">
         <div className="text-center">
-          <h3 className="text-black m-0 p-5 text-2xl">Edit Group Name</h3>
+          <h3 className="text-black m-0 p-5 text-2xl">Edit Group</h3>
         </div>
           <div className="text-center pt-2">
           <Formik 

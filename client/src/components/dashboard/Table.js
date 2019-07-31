@@ -13,6 +13,7 @@ import axios from "axios";
 
 import EditGroupModal from "./EditGroupModal";
 import DelGroupModal from "./DelGroupModal";
+import KeyModal from "./KeyModal";
 
 const GroupNameSchema = Yup.object().shape({
   groupName: Yup.string()
@@ -25,11 +26,13 @@ function Table() {
   const [groups, setGroups] = useState([]);
   const [keys, setKeys] = useState([]);
   const [state, setState] = useState({
+    currentGroupId: null,
     addingGroup: false,
     addingKey: false,
     editGroupModalShowing: false,
     delGroupModalShowing: false,
-    currentGroupId: null
+    keyModalShowing: false,
+    keyAction: null
   });
 
   useEffect(() => {
@@ -43,6 +46,8 @@ function Table() {
 
   async function handleGroupClick(e) {
     const groupId = e.target.value;
+    
+    setState({ ...state, currentGroupId: groupId })
 
     const selectedGroup = groups.filter(group => group._id == groupId)[0];
 
@@ -59,6 +64,10 @@ function Table() {
 
   function closeDelGroupModalHandler() {
     setState({ ...state, delGroupModalShowing: false });
+  }
+
+  function closeKeyModalHandler() {
+    setState({ ...state, keyModalShowing: false });
   }
 
   return (
@@ -214,7 +223,15 @@ function Table() {
             </ul>
           </div>
           <div className="p-4 w-full border-b text-center">
-            <button onClick={handleAddGroupClick}>
+            <button 
+              onClick={() =>
+                setState({
+                  ...state,
+                  keyModalShowing: true,
+                  keyAction: 'Add'
+                })
+              }
+            >
               <FontAwesomeIcon icon={faPlus} />
             </button>
           </div>
@@ -233,6 +250,12 @@ function Table() {
         groupId={state.currentGroupId}
         groups={groups}
         setGroups={setGroups}
+      />
+      <KeyModal
+        action={state.keyAction}
+        show={state.keyModalShowing}
+        close={closeKeyModalHandler}
+        groupId={state.currentGroupId}
       />
     </Fragment>
   );

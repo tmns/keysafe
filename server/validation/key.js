@@ -27,8 +27,8 @@ function validateKeyInput(data) {
     errors.password = 'Password is required';
   }
 
-  if (!Validator.isLength(data.password, { min: 8, max: 64 })) {
-    errors.password = 'Password must be between 8 and 64 characters';
+  if (!Validator.isLength(data.password, { min: 1, max: 64 })) {
+    errors.password = 'Password must be between 1 and 64 characters';
   }
 
   if (!Validator.isEmpty(data.url)) {
