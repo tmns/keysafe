@@ -7,7 +7,6 @@ So far, the backend server / REST API has been implemented. You can:
 - Register a user
 - Update a user
 - Delete a user
-- Authenticate
 - Create a group (ie, category of keys)
 - Edit a group
 - Delete a group
@@ -15,4 +14,11 @@ So far, the backend server / REST API has been implemented. You can:
 - Edit a key
 - Delete a key
 
-Next up is the frontend!
+The frontend is being worked out, currently you can:
+
+- Register a user
+- Create a group
+- Edit a group
+- Delete a group
+
+*Note: crypto has not been added yet (I am implementing it w/o crypto  first and then will add it on in a second iteration)*
