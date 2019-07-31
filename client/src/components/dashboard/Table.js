@@ -6,7 +6,8 @@ import {
   faPlus,
   faCheck,
   faTimes,
-  faPen
+  faPen,
+  faCopy
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
@@ -77,15 +78,15 @@ function Table() {
                   <button value={group._id} onClick={handleGroupClick}>
                     {group.name}
                   </button>
-                  <button 
+                  <button
                     className="float-right"
-                    onClick={() => setState(
-                      {
-                        ...state, 
+                    onClick={() =>
+                      setState({
+                        ...state,
                         delGroupModalShowing: true,
                         currentGroupId: group._id
-                      }
-                    )}
+                      })
+                    }
                   >
                     <FontAwesomeIcon icon={faTimes} />{" "}
                   </button>
@@ -151,22 +152,66 @@ function Table() {
           </div>
         </div>
         <div className="w-3/4 flex-col bg-white rounded shadow-md">
-          <div className="flex justify-around pt-5 pb-3 border-b">
-            <p>Title</p>
-            <p>Username</p>
-            <p>URL</p>
+          <div className="flex pt-5 pb-3 border-b">
+            <div className="w-1/3 text-center">
+              <span className="">Title</span>
+            </div>
+            <div className="w-1/3 text-center">
+              <span className="">Username</span>
+            </div>
+            <div className="w-1/3 text-center">
+              <span className="">Actions</span>
+            </div>
           </div>
           <div>
-            {keys.map(key => (
-              <div
-                key={key._id}
-                className="flex justify-around pt-5 pb-3 border-b cursor-pointer hover:bg-teal-700 hover:text-white"
-              >
-                <p>{key.title}</p>
-                <p>{key.username}</p>
-                <p>{key.url}</p>
-              </div>
-            ))}
+            <ul>
+              {keys.map(key => (
+                <li
+                  key={key._id}
+                  className="flex pt-5 pb-3 border-b hover:bg-teal-700 hover:text-white text-center"
+                >
+                  <div className="w-1/3 text-center">
+                    <span className="">{key.title}</span>
+                  </div>
+                  <div className="w-1/3 text-center">
+                    <span className="">{key.username}</span>
+                  </div>
+                  <div className="w-1/3 text-center">
+                    <button
+                      onClick={async () => {
+                        await navigator.clipboard.writeText(key.password);
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faCopy} />{" "}
+                    </button>
+                    <button className="ml-12">
+                      <FontAwesomeIcon
+                        icon={faPen}
+                        // onClick={() =>
+                        //   setState({
+                        //     ...state,
+                        //     editGroupModalShowing: true,
+                        //     currentGroupId: group._id
+                        //   })
+                        // }
+                      />{" "}
+                    </button>
+                    <button
+                      className="ml-12"
+                      // onClick={() => setState(
+                      //   {
+                      //     ...state,
+                      //     delGroupModalShowing: true,
+                      //     currentGroupId: group._id
+                      //   }
+                      // )}
+                    >
+                      <FontAwesomeIcon icon={faTimes} />{" "}
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
           <div className="p-4 w-full border-b text-center">
             <button onClick={handleAddGroupClick}>
