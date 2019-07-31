@@ -14,11 +14,14 @@ So far, the backend server / REST API has been implemented. You can:
 - Edit a key
 - Delete a key
 
-The frontend is being worked out, currently you can:
+The frontend is currently being worked out, so far you can:
 
 - Register a user
 - Create a group
 - Edit a group
 - Delete a group
+- Create a key
+- Edit a key
+- Delete a key
 
 *Note: crypto has not been added yet (I am implementing it w/o crypto  first and then will add it on in a second iteration)*
