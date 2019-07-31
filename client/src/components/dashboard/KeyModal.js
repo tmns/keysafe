@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from 'axios';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEye, faEyeSlash
+} from "@fortawesome/free-solid-svg-icons";
 
 const KeySchema = Yup.object().shape({
   title: Yup.string()
@@ -17,6 +21,8 @@ const KeySchema = Yup.object().shape({
 })
 
 function KeyModal(props) {
+  const [seePwd, setSeePwd] = useState(false);
+
   return (
     <div 
       className="bg-overlay absolute inset-0 w-full h-screen flex items-center justify-center"
@@ -30,26 +36,36 @@ function KeyModal(props) {
         </div>
           <div className="text-center pt-2 pb-4">
           <Formik 
-            initialValues={
-              { 
-                title: props.action == 'Edit' ? props.key.title : '', 
-                url: props.action == 'Edit' ? props.key.url : '', 
-                username: props.action == 'Edit' ? props.key.username : '', 
-                password: props.action == 'Edit' ? props.key.password : ''
-              }
-            }
+            enableReinitialize
+            initialValues={{
+              title: props.keyToEdit ? props.keyToEdit.title : '',
+              url: props.keyToEdit ? props.keyToEdit.url : '',
+              username: props.keyToEdit ? props.keyToEdit.username : '',
+              password: props.keyToEdit ? props.keyToEdit.password : ''
+            }}
             validationSchema={KeySchema}
-            onSubmit={ async values => {
-              // await axios.put(`api/groups/${props.groupId}`, { name: value.groupName })
+            onSubmit={ async (values, { setSubmitting }) => {
+              if (props.action == 'Add') {
+                try {
+                  const res = await axios.post(`/api/groups/key/${props.groupId}`, values);
+                  props.setKeys(res.data.keys);
+                  props.close();
+                } catch(err) {
+                  console.log(err);
+                }
+              }
               
-              // const indexToUpdate = props.groups.map(group => group._id.toString()).indexOf(props.groupId);
-
-              // let updatedGroups = props.groups;
-              // updatedGroups[indexToUpdate].name = value.groupName;
-              // props.setGroups(updatedGroups);
-              
-              console.log(values)
-              props.close();
+              if (props.action == 'Edit') {
+                 try {
+                   const res = await axios.put(`/api/groups/key/${props.groupId}/${props.keyToEdit._id}`, values);
+                   props.setKeys(res.data.keys)
+                   props.close();
+                   setSeePwd(false);
+                   this.intialValues = {};
+                 } catch(err) {
+                   console.log(err);
+                 }
+              }
             }}
           >
             {({ errors, touched }) => (
@@ -73,13 +89,21 @@ function KeyModal(props) {
                   <div className="pt-2">{errors.username}</div>
                 ) : null}   
                 <div className="border-b border-b-2 border-teal-500 py-2 w-1/2 mx-auto text-left">
-                  <Field className="appearance-none bg-transparent border-none text-gray-700 py-2 px-3 leading-tight focus:outline-none" type="password" placeholder="Password" aria-label="password" name="password" />
+                  <Field className="appearance-none bg-transparent border-none text-gray-700 py-2 px-3 leading-tight focus:outline-none" type={seePwd ? 'text' : 'password'} placeholder="Password" aria-label="password" name="password" />
                 </div>
+                {!seePwd &&
+                <button className="mt-2" onClick={() => setSeePwd(true)}><FontAwesomeIcon icon={faEye} /></button>}
+                {seePwd && 
+                <button className="mt-2" onClick={() => setSeePwd(false)}><FontAwesomeIcon icon={faEyeSlash} /></button>}
                 {errors.password && touched.password ? (
                   <div className="pt-2">{errors.password}</div>
                 ) : null}                              
                 <div className="bg-blue px-4 pt-8 text-center">
-                  <button className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-1/4 mr-4" onClick={props.close}>Cancel</button>
+                  <button className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-1/4 mr-4" onClick={() => {
+                    props.close();
+                    setSeePwd(false);
+                  }} type="button">Cancel</button>
+
                   <button className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-1/4" type="submit">Save</button>
                 </div>                
               </Form>

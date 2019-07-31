@@ -14,6 +14,7 @@ import axios from "axios";
 import EditGroupModal from "./EditGroupModal";
 import DelGroupModal from "./DelGroupModal";
 import KeyModal from "./KeyModal";
+import DelKeyModal from './DelKeyModal';
 
 const GroupNameSchema = Yup.object().shape({
   groupName: Yup.string()
@@ -27,11 +28,14 @@ function Table() {
   const [keys, setKeys] = useState([]);
   const [state, setState] = useState({
     currentGroupId: null,
+    currentKeyId: null,
+    currentKey: null,
     addingGroup: false,
     addingKey: false,
     editGroupModalShowing: false,
     delGroupModalShowing: false,
     keyModalShowing: false,
+    delKeyModalShowing: false,
     keyAction: null
   });
 
@@ -70,10 +74,14 @@ function Table() {
     setState({ ...state, keyModalShowing: false });
   }
 
+  function closeDelKeyModalHandler() {
+    setState({ ...state, delKeyModalShowing: false });
+  }
+
   return (
     <Fragment>
       <div className="w-full max-w-xs md:max-w-4xl bg-teal-700 mx-auto flex">
-        <div className="w-1/4 flex-col bg-white mr-4 rounded shadow-md">
+        <div className="w-1/4 flex-col bg-white mr-4 rounded shadow-md overflow-auto" style={{maxHeight: '600px'}}>
           <div>
             <h2 className="text-center pt-5 pb-3 border-b">Groups</h2>
           </div>
@@ -141,6 +149,7 @@ function Table() {
                       <FontAwesomeIcon icon={faCheck} />
                     </button>
                     <button
+                      type="button"
                       className="ml-5"
                       onClick={() => setState({ ...state, addingGroup: false })}
                     >
@@ -160,7 +169,7 @@ function Table() {
             </button>
           </div>
         </div>
-        <div className="w-3/4 flex-col bg-white rounded shadow-md">
+        <div className="w-3/4 flex-col bg-white rounded shadow-md overflow-auto" style={{maxHeight: '600px'}}>
           <div className="flex pt-5 pb-3 border-b">
             <div className="w-1/3 text-center">
               <span className="">Title</span>
@@ -196,24 +205,25 @@ function Table() {
                     <button className="ml-12">
                       <FontAwesomeIcon
                         icon={faPen}
-                        // onClick={() =>
-                        //   setState({
-                        //     ...state,
-                        //     editGroupModalShowing: true,
-                        //     currentGroupId: group._id
-                        //   })
-                        // }
+                        onClick={() =>
+                          setState({
+                            ...state,
+                            keyModalShowing: true,
+                            keyAction: 'Edit',
+                            currentKey: key
+                          })
+                        }
                       />{" "}
                     </button>
                     <button
                       className="ml-12"
-                      // onClick={() => setState(
-                      //   {
-                      //     ...state,
-                      //     delGroupModalShowing: true,
-                      //     currentGroupId: group._id
-                      //   }
-                      // )}
+                      onClick={() => setState(
+                        {
+                          ...state,
+                          delKeyModalShowing: true,
+                          currentKeyId: key._id
+                        }
+                      )}
                     >
                       <FontAwesomeIcon icon={faTimes} />{" "}
                     </button>
@@ -256,6 +266,17 @@ function Table() {
         show={state.keyModalShowing}
         close={closeKeyModalHandler}
         groupId={state.currentGroupId}
+        keyToEdit={state.currentKey}
+        keys={keys}
+        setKeys={setKeys}
+      />
+      <DelKeyModal
+        show={state.delKeyModalShowing}
+        close={closeDelKeyModalHandler}
+        groupId={state.currentGroupId}
+        keyId={state.currentKeyId}
+        keys={keys}
+        setKeys={setKeys}
       />
     </Fragment>
   );

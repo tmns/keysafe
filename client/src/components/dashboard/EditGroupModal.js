@@ -47,7 +47,7 @@ function GroupModal(props) {
                   <div className="pt-2">{errors.groupName}</div>
                 ) : null}
                 <div className="bg-blue px-4 pt-8 text-center">
-                  <button className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-1/4 mr-4" onClick={props.close}>Cancel</button>
+                  <button className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-1/4 mr-4" onClick={props.close} type="button">Cancel</button>
                   <button className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-1/4" type="submit">Save</button>
                 </div>                
               </Form>
