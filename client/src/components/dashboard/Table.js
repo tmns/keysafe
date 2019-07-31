@@ -20,7 +20,7 @@ function Table() {
   const [state, setState] = useState({
     addingGroup: false,
     addingKey: false,
-    modalShowing: false,
+    groupModalShowing: false,
     currentGroupId: null
   })
 
@@ -45,13 +45,8 @@ function Table() {
     setState({ ...state, addingGroup: true });
   }
 
-  function openModalHandler(e) {
-    console.log(e.target)
-    setState({ ...state, modalShowing: true, currentGroupId: e.target.value  });
-  }
-
-  function closeModalHandler() {
-    setState({ ...state, modalShowing: false });
+  function closeGroupModalHandler() {
+    setState({ ...state, groupModalShowing: false });
   }
 
   return (
@@ -69,7 +64,7 @@ function Table() {
                     {group.name}
                   </button>
                   <button className="float-right"><FontAwesomeIcon icon={ faTimes } /> </button>
-                  <button value={group._id} className="mr-5 float-right"><FontAwesomeIcon icon={ faPen } onClick={openModalHandler} /> </button>
+                  <button className="mr-5 float-right"><FontAwesomeIcon icon={ faPen } onClick={() => setState({ ...state, groupModalShowing: true, currentGroupId: group._id })} /> </button>
                 </li>
             ))}
           </ul>
@@ -126,9 +121,9 @@ function Table() {
       </div>
     </div>
     <GroupModal
-      show={state.modalShowing}
-      close={closeModalHandler}
-      groupId={state.currentGoupId}
+      show={state.groupModalShowing}
+      close={closeGroupModalHandler}
+      groupId={state.currentGroupId}
       groups={groups}
       setGroups={setGroups}>
     </GroupModal>

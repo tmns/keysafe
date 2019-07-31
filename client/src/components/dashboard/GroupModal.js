@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+import axios from 'axios';
 
 const GroupNameSchema = Yup.object().shape({
   groupName: Yup.string()
@@ -26,11 +27,14 @@ function GroupModal(props) {
             initialValues={{ groupName: '' }}
             validationSchema={GroupNameSchema}
             onSubmit={ async value => {
-              console.log(value);
-              console.log(props.groupId)
-              // const res = await axios.put(`api/groups/${props.groupId}`, { name: value.name })
-              const updatedGroups = props.groups.slice(props.groups.map(group => group._id.toString()).indexOf(props.groupId));
-              console.log(updatedGroups);
+              await axios.put(`api/groups/${props.groupId}`, { name: value.groupName })
+              
+              const indexToUpdate = props.groups.map(group => group._id.toString()).indexOf(props.groupId);
+              
+              let updatedGroups = props.groups;
+              updatedGroups[indexToUpdate].name = value.groupName;
+              props.setGroups(updatedGroups);
+
               props.close();
             }}
           >
