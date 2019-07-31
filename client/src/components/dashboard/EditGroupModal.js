@@ -17,7 +17,7 @@ function GroupModal(props) {
       style={{
         transform: props.show ? 'translateY(0vh)' : 'translateY(-100vh)',
         opacity: props.show ? '1' : '0'
-    }}>
+      }}>
       <div className="bg-white rounded shadow-md h-64 w-1/3">
         <div className="text-center">
           <h3 className="text-black m-0 p-5 text-2xl">Edit Group Name</h3>
@@ -30,7 +30,7 @@ function GroupModal(props) {
               await axios.put(`api/groups/${props.groupId}`, { name: value.groupName })
               
               const indexToUpdate = props.groups.map(group => group._id.toString()).indexOf(props.groupId);
-              
+
               let updatedGroups = props.groups;
               updatedGroups[indexToUpdate].name = value.groupName;
               props.setGroups(updatedGroups);
