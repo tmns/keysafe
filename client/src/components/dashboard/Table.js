@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faCheck, faTimes, faPen } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 
+import GroupModal from './GroupModal';
+
 const GroupNameSchema = Yup.object().shape({
   groupName: Yup.string()
     .min(2, "Group name must be at least 2 characters")
@@ -17,7 +19,9 @@ function Table() {
   const [keys, setKeys] = useState([]);
   const [state, setState] = useState({
     addingGroup: false,
-    addingKey: false
+    addingKey: false,
+    modalShowing: false,
+    currentGroupId: null
   })
 
   useEffect(() => {
@@ -41,7 +45,17 @@ function Table() {
     setState({ ...state, addingGroup: true });
   }
 
+  function openModalHandler(e) {
+    console.log(e.target)
+    setState({ ...state, modalShowing: true, currentGroupId: e.target.value  });
+  }
+
+  function closeModalHandler() {
+    setState({ ...state, modalShowing: false });
+  }
+
   return (
+    <Fragment>
     <div className="w-full max-w-xs md:max-w-4xl bg-teal-700 mx-auto flex">
       <div className="w-1/4 flex-col bg-white mr-4 rounded shadow-md">
         <div>
@@ -55,7 +69,7 @@ function Table() {
                     {group.name}
                   </button>
                   <button className="float-right"><FontAwesomeIcon icon={ faTimes } /> </button>
-                  <button className="mr-5 float-right"><FontAwesomeIcon icon={ faPen } /> </button>
+                  <button value={group._id} className="mr-5 float-right"><FontAwesomeIcon icon={ faPen } onClick={openModalHandler} /> </button>
                 </li>
             ))}
           </ul>
@@ -111,6 +125,14 @@ function Table() {
         </div>
       </div>
     </div>
+    <GroupModal
+      show={state.modalShowing}
+      close={closeModalHandler}
+      groupId={state.currentGoupId}
+      groups={groups}
+      setGroups={setGroups}>
+    </GroupModal>
+    </Fragment>
   );
 }
 
