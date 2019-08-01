@@ -4,15 +4,17 @@
 
 KeySafe is an app for storing all your passwords / keys. Designed to be as simple to use as possible. All data is encrypted client-side - so only you know what you're storing! Built with the help of React, Redux, Formik, Tailwind, Express / Node, Mongoose / MongoDB. 
 
-Almost all of the functionality of the frontend has been completed. So far you can:
+Most of the main functionality has been completed. You can:
 
-- Register a user
-- Create a group
-- Edit a group
-- Delete a group
-- Create a key
-- Edit a key
-- Delete a key
+- Register user
+- Edit username
+- Delete user
+- Create group
+- Edit group
+- Delete group
+- Create key
+- Edit key
+- Delete key
 
 ## Encryption
 
