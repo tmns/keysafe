@@ -51,7 +51,7 @@ function KeyModal(props) {
                 url: encrypt(values.url, edKey),
                 username: encrypt(values.username, edKey),
                 password: encrypt(values.password, edKey)
-              }
+              };
 
               let res;
 
@@ -66,8 +66,8 @@ function KeyModal(props) {
                     `/api/groups/key/${props.groupId}/${props.keyToEdit._id}`,
                     keyData
                   );
-                }  
-              } catch(err) {
+                }
+              } catch (err) {
                 console.log(err);
               }
 
@@ -81,8 +81,14 @@ function KeyModal(props) {
 
               // reset form fields
               for (let key of Object.keys(values)) {
-                values[key] = '';
+                values[key] = "";
               }
+
+              // update the groups object so items can be immediately edited and deleted if need be
+              const groupToUpdate = props.groups.filter(group => group._id == props.groupId)[0];
+
+              groupToUpdate.keys = res.data.keys;
+              props.setGroups(props.groups);
 
               props.setKeys(res.data.keys);
               props.close();

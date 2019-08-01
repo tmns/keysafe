@@ -291,6 +291,8 @@ function Table() {
         show={state.keyModalShowing}
         close={closeKeyModalHandler}
         groupId={state.currentGroupId}
+        groups={groups}
+        setGroups={setGroups}
         keyToEdit={state.currentKey}
         keys={keys}
         setKeys={setKeys}
