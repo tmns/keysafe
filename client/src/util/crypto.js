@@ -1,29 +1,20 @@
-import bcrypt from 'bcrypt';
-import { aes, utf8 } from 'crypto-js';
+import bcrypt from 'bcryptjs';
+import aes from 'crypto-js/aes';
+import utf8 from 'crypto-js/enc-utf8';
 
 async function generateSalt() {
   const salt = await bcrypt.genSalt(14);
   return salt;
 }
 
-async function configureSalt(userData) {
-  let salt;
-
-  if (!userData.salt) {
-    salt = await generateSalt();
-  } else {
-    salt = userData.salt;
-  }
-
-  return salt;
-}
-
-async function configureKey(salt, password) {
+async function generateKey(salt, password) {
   const key = await bcrypt.hash(password, salt);
   return key;
 }
 
 function encrypt(data, key) {
+  const encrypted = aes.encrypt(JSON.stringify(data), key);
+  console.log(encrypted.toString());
   return aes.encrypt(JSON.stringify(data), key).toString();
 }
 
@@ -41,8 +32,8 @@ function decrypt(encrypted, key) {
 }
 
 export {
-  configureSalt,
-  configureKey,
+  generateSalt,
+  generateKey,
   encrypt,
   decrypt
 }

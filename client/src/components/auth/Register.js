@@ -5,6 +5,7 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
 import { registerUser, clearErrors } from '../../actions/authActions';
+import { generateSalt } from '../../util/crypto';
 
 const RegisterSchema = Yup.object().shape({
   username: Yup.string()
@@ -31,11 +32,14 @@ function Register({ errorsFromServer, history, registerUser, clearErrors }) {
           confirmPassword: ""
         }}
         validationSchema={RegisterSchema}
-        onSubmit={values => {
+        onSubmit={async values => {
+          // generate user salt
+          const salt = await generateSalt();
           const newUser = {
             username: values.username,
             password: values.password,
-            confirmPassword: values.confirmPassword
+            confirmPassword: values.confirmPassword,
+            salt
           }
           clearErrors();
           registerUser(newUser, history);

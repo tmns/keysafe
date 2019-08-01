@@ -130,11 +130,11 @@ router.post('/key/:group_id', sessionChecker, async (req, res) => {
 // @desc Updates a key
 // @access Private
 router.put('/key/:group_id/:key_id', sessionChecker, async (req, res) => {
-  const { errors, isValid } = validateUpdateKeyInput(req.body);
+  // const { errors, isValid } = validateUpdateKeyInput(req.body);
 
-  if (!isValid) {
-    return res.status(400).json(errors);
-  }
+  // if (!isValid) {
+  //   return res.status(400).json(errors);
+  // }
 
   const group = await Group.findOne({ _id: req.params.group_id, createdBy: req.session.userId });
 

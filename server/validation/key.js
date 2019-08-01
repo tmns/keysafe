@@ -13,28 +13,8 @@ function validateKeyInput(data) {
     errors.title = 'Title is required';
   }
 
-  if (!Validator.isLength(data.title, { min: 1, max: 64 })) {
-    errors.title = 'Title must be between 1 and 64 characters';
-  }
-
-  if (!Validator.isEmpty(data.username)) {
-    if (!Validator.isLength(data.username,  { min: 1, max: 64 })) {
-      errors.username = 'Username must be between 1 and 64 characters';
-    }
-  }
-
   if (Validator.isEmpty(data.password)) {
     errors.password = 'Password is required';
-  }
-
-  if (!Validator.isLength(data.password, { min: 1, max: 64 })) {
-    errors.password = 'Password must be between 1 and 64 characters';
-  }
-
-  if (!Validator.isEmpty(data.url)) {
-    if (!Validator.isLength(data.url, { min: 1, max: 64 })) {
-      errors.url = 'Url must be between 1 and 64 characters';
-    }
   }
 
   return {

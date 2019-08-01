@@ -35,7 +35,8 @@ router.post('/register', async (req, res) => {
     
   const newUser = new User({
     username: req.body.username,
-    password: hash
+    password: hash,
+    salt: req.body.salt,
   });
   
   try {
@@ -75,7 +76,7 @@ router.post('/login', async (req, res) => {
   if (hashesMatch) {
     req.session.user = user.username;
     req.session.userId = user.id;
-    res.json({ id: user.id, username: user.username });
+    res.json({ id: user.id, username: user.username, salt: user.salt });
   } else {
     errors.password = 'Incorrect password.';
     return res.status(400).json(errors);
@@ -85,7 +86,7 @@ router.post('/login', async (req, res) => {
 // @route GET api/users/current
 // @desc Return current user
 // @access Private
-router.get('/current', sessionChecker, (req, res) => {
+router.get('/current', sessionChecker, async (req, res) => {
   res.json({
     id: req.session.userId,
     username: req.session.user
@@ -177,10 +178,9 @@ router.delete('/', sessionChecker, async (req, res) => {
 // @route GET api/users/salt
 // @desc Gets a user's salt
 // @access Private
-
-// @route POST api/users/salt
-// @desc Stores a user's salt
-// @access Private
-
+router.get('/salt', sessionChecker, async (req, res) => {
+  const user = await User.findById(req.session.userId);
+  return res.json({ salt: user.salt });
+})
 
 export default router;

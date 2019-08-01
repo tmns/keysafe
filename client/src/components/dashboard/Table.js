@@ -10,11 +10,13 @@ import {
   faCopy
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import ls from 'local-storage';
 
 import EditGroupModal from "./EditGroupModal";
 import DelGroupModal from "./DelGroupModal";
 import KeyModal from "./KeyModal";
 import DelKeyModal from './DelKeyModal';
+import { encrypt, decrypt } from '../../util/crypto';
 
 const GroupNameSchema = Yup.object().shape({
   groupName: Yup.string()
@@ -42,6 +44,24 @@ function Table() {
   useEffect(() => {
     const getGroups = async () => {
       const res = await axios.get("/api/groups");
+      const edKey = ls.get('edKey');
+      console.log(edKey)
+      console.log(res.data)
+      
+      // if groups exist, decrypt their names and keys
+      if (res.data.length != 0) {
+        res.data.forEach(group => {
+          group.name = decrypt(group.name, edKey);
+          group.keys.forEach(key => {
+            key.title = decrypt(key.title, edKey);
+            key.url = decrypt(key.url, edKey);
+            key.username = decrypt(key.username, edKey);
+            key.password = decrypt(key.password, edKey);
+          })
+        })
+      } 
+
+      console.log(res.data);
 
       setGroups(res.data);
     };
@@ -128,14 +148,17 @@ function Table() {
               initialValues={{ groupName: "" }}
               validationSchema={GroupNameSchema}
               onSubmit={async value => {
-                // check if this is first time adding a group
-                // If so, this means the user needs to gnerate their salt
-                // We check this by simply checking if user salt already exist
-                
+                // encrypt group name to store in db
+                const edKey = ls.get('edKey');
+                const encGroupName = encrypt(value.groupName, edKey);
 
                 const res = await axios.post("/api/groups", {
-                  name: value.groupName
+                  name: encGroupName
                 });
+
+                // decrypt group name to update client
+                res.data.name = decrypt(res.data.name, edKey);
+
                 setGroups([...groups, res.data]);
                 setState({ ...state, addingGroup: false });
               }}

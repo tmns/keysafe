@@ -6,9 +6,7 @@ const GroupSchema = new Schema(
   {
     name: {
       type: String,
-      required: true,
-      minlength: 1,
-      maxlength: 32
+      required: true
     },
     createdBy: {
       type: mongoose.SchemaTypes.ObjectId,
@@ -19,21 +17,17 @@ const GroupSchema = new Schema(
       {
         title: {
           type: String,
-          required: true,
-          maxlength: 64
+          required: true
         },
         username: {
-          type: String,
-          maxlength: 64
+          type: String
         },
         password: {
           type: String,
-          required: true,
-          maxlength: 64
+          required: true
         },
         url: {
-          type: String,
-          maxlength: 64
+          type: String
         }
       }
     ]

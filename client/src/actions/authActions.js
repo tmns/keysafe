@@ -1,5 +1,8 @@
 import axios from 'axios';
+import ls from 'local-storage';
+
 import { GET_ERRORS, CLEAR_ERRORS, SET_CURRENT_USER } from './types';
+import { generateKey } from '../util/crypto';
 
 export const registerUser = (userData, history) => async dispatch => {
   try {
@@ -13,6 +16,10 @@ export const registerUser = (userData, history) => async dispatch => {
 export const loginUser = (userData, history) => async dispatch => {
   try {
     const res = await axios.post('/api/users/login', userData);
+    
+    // generate user encryption / decryption key
+    const edKey = await generateKey(res.data.salt, userData.password);
+    ls.set('edKey', edKey);
     
     dispatch(setCurrentUser({ user: res.data.username, userId: res.data.id }));
     history.push('/dashboard');

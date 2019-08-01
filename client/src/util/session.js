@@ -8,7 +8,7 @@ async function checkIfLoggedIn() {
       auth: {
         user: {
           username: res.data.username,
-          userId: res.data.id  
+          userId: res.data.id
         },
         isAuthenticated: true
       }

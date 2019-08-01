@@ -2,6 +2,8 @@ import React from 'react';
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from 'axios';
+import ls from 'local-storage';
+import { encrypt } from '../../util/crypto';
 
 const GroupNameSchema = Yup.object().shape({
   groupName: Yup.string()
@@ -27,7 +29,10 @@ function GroupModal(props) {
             initialValues={{ groupName: '' }}
             validationSchema={GroupNameSchema}
             onSubmit={ async value => {
-              await axios.put(`api/groups/${props.groupId}`, { name: value.groupName })
+              const edKey = ls.get('edKey');
+              const encGroupName = encrypt(value.groupName, edKey);
+
+              await axios.put(`api/groups/${props.groupId}`, { name: encGroupName })
               
               const indexToUpdate = props.groups.map(group => group._id.toString()).indexOf(props.groupId);
 

@@ -7,7 +7,7 @@ import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { logoutUser } from '../../actions/authActions';
 
 function Navbar({ auth, logoutUser }) {
-
+  console.log(auth)
   const guestLinks = (
     <div className="w-full block flex-grow md:flex md:items-center md:w-auto md:justify-end">
       <div>
