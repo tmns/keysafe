@@ -174,6 +174,10 @@ router.delete('/', sessionChecker, async (req, res) => {
   }
 })
 
+// @route GET api/users/salt
+// @desc Gets a user's salt
+// @access Private
+
 // @route POST api/users/salt
 // @desc Stores a user's salt
 // @access Private

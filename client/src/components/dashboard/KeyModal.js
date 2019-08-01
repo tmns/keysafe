@@ -61,7 +61,6 @@ function KeyModal(props) {
                    props.setKeys(res.data.keys)
                    props.close();
                    setSeePwd(false);
-                   this.intialValues = {};
                  } catch(err) {
                    console.log(err);
                  }

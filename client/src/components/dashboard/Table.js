@@ -128,6 +128,11 @@ function Table() {
               initialValues={{ groupName: "" }}
               validationSchema={GroupNameSchema}
               onSubmit={async value => {
+                // check if this is first time adding a group
+                // If so, this means the user needs to gnerate their salt
+                // We check this by simply checking if user salt already exist
+                
+
                 const res = await axios.post("/api/groups", {
                   name: value.groupName
                 });
@@ -238,7 +243,8 @@ function Table() {
                 setState({
                   ...state,
                   keyModalShowing: true,
-                  keyAction: 'Add'
+                  keyAction: 'Add',
+                  currentKey: null
                 })
               }
             >
