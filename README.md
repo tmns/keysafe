@@ -44,7 +44,7 @@ This will utilize `concurrently` to run both the server and client simultaneousl
 ## Usage
 First, before running you will want to set up a Mongo database, which can be local or remote. Once this is done you can plug it's URI into the `DB_URI` variable of `server/config/config.js`.
 
-After that, you should be able to run the app and create a user account. From there, you can add decks, cards, study them, etc.
+After that, you should be able to run the app and create a user account. From there, you can add groups, add keys, edit them, etc.
 
 ## License
 The source of this app may be used under the WTFPL - or, if you take issue with that, consider it to be under the CC0.
