@@ -45,8 +45,6 @@ function Table() {
     const getGroups = async () => {
       const res = await axios.get("/api/groups");
       const edKey = ls.get('edKey');
-      console.log(edKey)
-      console.log(res.data)
       
       // if groups exist, decrypt their names and keys
       if (res.data.length != 0) {
@@ -60,8 +58,6 @@ function Table() {
           })
         })
       } 
-
-      console.log(res.data);
 
       setGroups(res.data);
     };
@@ -260,7 +256,7 @@ function Table() {
               ))}
             </ul>
           </div>
-          <div className="p-4 w-full border-b text-center">
+          {state.currentGroupId && <div className="p-4 w-full border-b text-center">
             <button 
               onClick={() =>
                 setState({
@@ -273,7 +269,7 @@ function Table() {
             >
               <FontAwesomeIcon icon={faPlus} />
             </button>
-          </div>
+          </div>}
         </div>
       </div>
       <EditGroupModal

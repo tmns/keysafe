@@ -13,8 +13,6 @@ async function generateKey(salt, password) {
 }
 
 function encrypt(data, key) {
-  const encrypted = aes.encrypt(JSON.stringify(data), key);
-  console.log(encrypted.toString());
   return aes.encrypt(JSON.stringify(data), key).toString();
 }
 

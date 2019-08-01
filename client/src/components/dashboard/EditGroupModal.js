@@ -29,6 +29,7 @@ function GroupModal(props) {
             initialValues={{ groupName: '' }}
             validationSchema={GroupNameSchema}
             onSubmit={ async value => {
+              // encrypt group name for storing in db
               const edKey = ls.get('edKey');
               const encGroupName = encrypt(value.groupName, edKey);
 
