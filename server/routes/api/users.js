@@ -129,14 +129,15 @@ router.put('/', sessionChecker, async (req, res) => {
     }
 
     user.username = req.body.username;
+    req.session.user = user.username;
   } 
   
-  if (req.body.newPassword != '' ) {
-    const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(req.body.newPassword, salt);
+  // if (req.body.newPassword != '' ) {
+  //   const salt = await bcrypt.genSalt(10);
+  //   const hash = await bcrypt.hash(req.body.newPassword, salt);
 
-    user.password = hash;
-  }
+  //   user.password = hash;
+  // }
 
   try {
     const updatedUser = await user.save();
@@ -146,17 +147,14 @@ router.put('/', sessionChecker, async (req, res) => {
   }
 })
 
-// @route DELETE api/users
-// @desc Delete a user
+// @route POST api/users/authCheck
+// @desc Checks a users password
 // @access Private
-router.delete('/', sessionChecker, async (req, res) => {
-  let errors = {};
-
+router.post('/authCheck', sessionChecker, async (req, res) => {
   if (!req.body.password) {
-    errors.password = 'Password required';
-    return res.status(400).json(errors);
+    return res.status(400).json({ password: 'Password required' });
   }
-
+  
   const user = await User.findById(req.session.userId);
 
   const hashesMatch = await bcrypt.compare(req.body.password, user.password);
@@ -166,9 +164,24 @@ router.delete('/', sessionChecker, async (req, res) => {
     return res.status(400).json(errors);
   }
 
+  res.json({ success: true })
+})
+
+// @route DELETE api/users
+// @desc Delete a user
+// @access Private
+router.delete('/', sessionChecker, async (req, res) => {
+  const user = await User.findById(req.session.userId);
+
   try {
+    // remove user
     await user.remove();
-    req.session.destroy();
+    // remove all groups of keys associated with user
+    try {
+      await Group.deleteMany({ createdBy: user._id });
+    } catch(err) {
+      console.log(err);
+    }
     res.json({ success: true });
   } catch (err) {
     return res.status(400).json(err);

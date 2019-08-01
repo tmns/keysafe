@@ -2,26 +2,28 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+import { SwapSpinner } from "react-spinners-kit";
 
-import { loginUser } from "../../actions/authActions";
+import { loginUser, clearErrors } from "../../actions/authActions";
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string().required("A username is required"),
   password: Yup.string().required("A password is required")
 });
 
-function Login({ history, loginUser, errorsFromServer }) {
+function Login({ history, loginUser, clearErrors, errorsFromServer }) {
   const [loading, setLoading] = useState(false);
 
   return (
     <div className="w-full max-w-xs flex-auto mx-auto">
       <h1 className="text-white text-center text-5xl font-thin py-10">Login</h1>
-      {loading && (
-        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 text-center text-teal-800 text-md font-bd">
-          Generating security key and decrypting your data...
+      {loading && Object.keys(errorsFromServer).length == 0 && (
+        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 text-center text-teal-800 text-md font-bd flex flex-col justify-center items-center">
+          <p className="mb-4">Generating security key and decrypting your data...</p>
+          <SwapSpinner color="#198c8c" />
         </div>
       )}
-      {!loading && (
+      {(!loading || Object.keys(errorsFromServer).length > 0) && (
         <Formik
           initialValues={{
             username: "",
@@ -33,7 +35,7 @@ function Login({ history, loginUser, errorsFromServer }) {
               username: values.username,
               password: values.password
             };
-
+            clearErrors();
             loginUser(userData, history);
             setLoading(true);
           }}
@@ -91,5 +93,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { loginUser }
+  { loginUser, clearErrors }
 )(Login);

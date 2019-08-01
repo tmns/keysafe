@@ -1,12 +1,27 @@
-import React from "react";
-import { connect } from 'react-redux';
+import React, { useState } from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLock } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLock } from "@fortawesome/free-solid-svg-icons";
 
-import { logoutUser } from '../../actions/authActions';
+import { logoutUser } from "../../actions/authActions";
+import EditUserModal from "../dashboard/EditUserModal";
+import DelUserModal from '../dashboard/DelUserModal';
 
 function Navbar({ auth, logoutUser }) {
+  const [state, setState] = useState({
+    settingsModalShowing: false,
+    deleteUserModalShowing: false
+  });
+
+  function closeSettingsModalHandler() {
+    setState({ ...state, settingsModalShowing: false });
+  }
+
+  function closeDeleteUserModalHandler() {
+    setState({ ...state, deleteUserModalShowing: false });
+  }
+
   const guestLinks = (
     <div className="w-full block flex-grow md:flex md:items-center md:w-auto md:justify-end">
       <div>
@@ -31,12 +46,12 @@ function Navbar({ auth, logoutUser }) {
   const authLinks = (
     <div className="w-full block flex-grow md:flex md:items-center md:w-auto md:justify-end">
       <div>
-        <Link
-          to="/settings"
+        <button
           className="hidden md:inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
+          onClick={() => setState({ settingsModalShowing: true })}
         >
           Settings
-        </Link>
+        </button>
       </div>
       <div>
         <button
@@ -55,7 +70,11 @@ function Navbar({ auth, logoutUser }) {
         <div className="flex items-center flex-shrink-0 text-white mr-6">
           <Link to={auth.isAuthenticated ? "/dashboard" : "/"}>
             <span className="font-semibold text-xl tracking-light">
-              <span className="pr-2"><FontAwesomeIcon icon={ faLock } /></span> KeySafe</span>
+              <span className="pr-2">
+                <FontAwesomeIcon icon={faLock} />
+              </span>{" "}
+              KeySafe
+            </span>
           </Link>
         </div>
         <div className="block md:hidden">
@@ -70,14 +89,27 @@ function Navbar({ auth, logoutUser }) {
             </svg>
           </button>
         </div>
-        { auth.isAuthenticated ? authLinks : guestLinks }
+        {auth.isAuthenticated ? authLinks : guestLinks}
       </nav>
+      <EditUserModal
+        show={state.settingsModalShowing}
+        close={closeSettingsModalHandler}
+        state={state}
+        setState={setState}
+      />
+      <DelUserModal
+        show={state.deleteUserModalShowing}
+        close={closeDeleteUserModalHandler}
+      />
     </div>
   );
 }
 
 const mapStateToProps = state => ({
   auth: state.auth
-})
+});
 
-export default connect(mapStateToProps, { logoutUser })(Navbar);
+export default connect(
+  mapStateToProps,
+  { logoutUser }
+)(Navbar);

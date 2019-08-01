@@ -46,10 +46,12 @@ function KeyModal(props) {
             onSubmit={async (values, { setSubmitting }) => {
               // encrypt key data for storing in db
               const edKey = ls.get("edKey");
-              values.title = encrypt(values.title, edKey);
-              values.url = encrypt(values.url, edKey);
-              values.username = encrypt(values.username, edKey);
-              values.password = encrypt(values.password, edKey);
+              const keyData = {
+                title: encrypt(values.title, edKey),
+                url: encrypt(values.url, edKey),
+                username: encrypt(values.username, edKey),
+                password: encrypt(values.password, edKey)
+              }
 
               let res;
 
@@ -57,12 +59,12 @@ function KeyModal(props) {
                 if (props.action == "Add") {
                   res = await axios.post(
                     `/api/groups/key/${props.groupId}`,
-                    values
+                    keyData
                   );
                 } else if (props.action == "Edit") {
                   res = await axios.put(
                     `/api/groups/key/${props.groupId}/${props.keyToEdit._id}`,
-                    values
+                    keyData
                   );
                 }  
               } catch(err) {
@@ -76,6 +78,11 @@ function KeyModal(props) {
                 key.username = decrypt(key.username, edKey);
                 key.password = decrypt(key.password, edKey);
               });
+
+              // reset form fields
+              for (let key of Object.keys(values)) {
+                values[key] = '';
+              }
 
               props.setKeys(res.data.keys);
               props.close();
