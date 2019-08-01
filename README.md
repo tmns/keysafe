@@ -1,18 +1,6 @@
 # KeySafe
 
-A simple safe for storing all your passwords / keys. Not associated with the Android app. Under heavy construction!
-
-So far, the backend server / REST API has been implemented. You can:
-
-- Register a user
-- Update a user
-- Delete a user
-- Create a group (ie, category of keys)
-- Edit a group
-- Delete a group
-- Create a key
-- Edit a key
-- Delete a key
+An app for storing all your passwords / keys. Designed to be as simple to use as possible. All data is encrypted client-side - so only you know what you're storing! Built with the help of React, Redux, Formik, Tailwind, Express / Node, Mongoose / MongoDB. 
 
 Almost all of the functionality of the frontend has been completed. So far you can:
 
@@ -32,9 +20,38 @@ This is achieved by creating a unique salt for each user upon registration, whic
 
 Relevant files to take a look at for inspecting the encryption scheme include: 
 
-- `./client/src/util/crypto.js` 
-- `./client/src/components/auth/Register.js` 
+- `client/src/util/crypto.js` 
+- `client/src/components/auth/Register.js` 
 - `client/src/actions/authActions.js`
 - `client/src/components/dashboard/Table.js`
 - `client/src/components/dashboard/KeyModal.js`
 - `client/src/components/dashboard/EditGroupModal.js`
+
+## Build
+To build, `cd` to project root and run:
+```
+$ npm install && npm run build
+```
+This should install dependencies and then output a transpiled version of app.js to `dist`.
+
+## Run
+To run the app in development, it is suggested you use the following command from the project root:
+```
+$ npm run dev
+```
+This will utilize `concurrently` to run both the server and client simultaneously. If instead you wish to run them independently, see the project's `package.json` for the relavent script commands.
+
+## Usage
+First, before running you will want to set up a Mongo database, which can be local or remote. Once this is done you can plug it's URI into the `DB_URI` variable of `server/config/config.js`.
+
+After that, you should be able to run the app and create a user account. From there, you can add decks, cards, study them, etc.
+
+## License
+The source of this app may be used under the WTFPL - or, if you take issue with that, consider it to be under the CC0.
+
+## Contributing
+Feedback and contributions are welcome. Feel free to create issues, fork, submit pull requests, etc.
+
+Finally, if you want to contribute in a different way, you can always buy me a coffee ^_^
+
+[![Buy me a coffee](https://www.buymeacoffee.com/assets/img/custom_images/purple_img.png)](https://www.buymeacoffee.com/tmns)
