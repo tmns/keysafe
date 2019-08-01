@@ -1,6 +1,8 @@
 # KeySafe
 
-An app for storing all your passwords / keys. Designed to be as simple to use as possible. All data is encrypted client-side - so only you know what you're storing! Built with the help of React, Redux, Formik, Tailwind, Express / Node, Mongoose / MongoDB. 
+![](./screens/dashboard.png)
+
+KeySafe is an app for storing all your passwords / keys. Designed to be as simple to use as possible. All data is encrypted client-side - so only you know what you're storing! Built with the help of React, Redux, Formik, Tailwind, Express / Node, Mongoose / MongoDB. 
 
 Almost all of the functionality of the frontend has been completed. So far you can:
 
@@ -55,3 +57,5 @@ Feedback and contributions are welcome. Feel free to create issues, fork, submit
 Finally, if you want to contribute in a different way, you can always buy me a coffee ^_^
 
 [![Buy me a coffee](https://www.buymeacoffee.com/assets/img/custom_images/purple_img.png)](https://www.buymeacoffee.com/tmns)
+
+*Note: This app is not related to the Android app of the same name in any way!* 
