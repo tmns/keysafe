@@ -96,8 +96,8 @@ function Table() {
 
   return (
     <Fragment>
-      <div className="w-full max-w-xs md:max-w-4xl bg-teal-700 mx-auto flex">
-        <div className="w-1/4 flex-col bg-white mr-4 rounded shadow-md overflow-auto" style={{maxHeight: '600px'}}>
+      <div className="w-full max-w-xs md:max-w-4xl bg-teal-700 mx-auto flex flex-col md:flex-row">
+        <div className="w-full md:w-1/4 flex-col bg-white mr-4 rounded shadow-md overflow-auto mb-4 md:mb-0" style={{maxHeight: '600px'}}>
           <div>
             <h2 className="text-center pt-5 pb-3 border-b">Groups</h2>
           </div>
@@ -193,7 +193,7 @@ function Table() {
             </button>
           </div>
         </div>
-        <div className="w-3/4 flex-col bg-white rounded shadow-md overflow-auto" style={{maxHeight: '600px'}}>
+        <div className="w-full md:w-3/4 flex-col bg-white rounded shadow-md overflow-auto" style={{maxHeight: '600px'}}>
           <div className="flex pt-5 pb-3 border-b">
             <div className="w-1/3 text-center">
               <span className="">Title</span>
@@ -226,7 +226,7 @@ function Table() {
                     >
                       <FontAwesomeIcon icon={faCopy} />{" "}
                     </button>
-                    <button className="ml-12">
+                    <button className="ml-6 md:ml-12">
                       <FontAwesomeIcon
                         icon={faPen}
                         onClick={() =>
@@ -240,7 +240,7 @@ function Table() {
                       />{" "}
                     </button>
                     <button
-                      className="ml-12"
+                      className="ml-6 md:ml-12"
                       onClick={() => setState(
                         {
                           ...state,
