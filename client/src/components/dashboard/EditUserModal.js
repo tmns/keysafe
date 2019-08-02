@@ -14,13 +14,13 @@ const UpdateUserSchema = Yup.object().shape({
 function EditUserModal(props) {
   return (
     <div
-      className="bg-overlay absolute inset-0 w-full h-screen flex items-center justify-center"
+      className="bg-transparent md:bg-overlay absolute inset-0 w-full h-screen flex items-center justify-center"
       style={{
         transform: props.show ? "translateY(0vh)" : "translateY(-100vh)",
         opacity: props.show ? "1" : "0"
       }}
     >
-      <div className="bg-white rounded shadow-md w-1/3">
+      <div className="bg-white rounded shadow-md mx-2 md:mx-0 w-full md:w-1/3">
         <div className="text-center">
           <h3 className="text-black m-0 p-5 text-2xl">User Settings</h3>
         </div>

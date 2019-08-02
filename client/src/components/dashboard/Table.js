@@ -212,13 +212,13 @@ function Table() {
                   key={key._id}
                   className="flex pt-5 pb-3 border-b hover:bg-teal-700 hover:text-white text-center"
                 >
-                  <div className="w-1/3 text-center">
+                  <div className="w-1/3 text-center overflow-auto">
                     <span className="">{key.title}</span>
                   </div>
-                  <div className="w-1/3 text-center">
+                  <div className="w-1/3 text-center overflow-auto">
                     <span className="">{key.username}</span>
                   </div>
-                  <div className="w-1/3 text-center">
+                  <div className="w-1/3 text-center overflow-auto">
                     <button
                       onClick={async () => {
                         await navigator.clipboard.writeText(key.password);
