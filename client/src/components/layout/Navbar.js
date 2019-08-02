@@ -11,7 +11,8 @@ import DelUserModal from '../dashboard/DelUserModal';
 function Navbar({ auth, logoutUser }) {
   const [state, setState] = useState({
     settingsModalShowing: false,
-    deleteUserModalShowing: false
+    deleteUserModalShowing: false,
+    navTrayShowing: false
   });
 
   function closeSettingsModalHandler() {
@@ -48,7 +49,7 @@ function Navbar({ auth, logoutUser }) {
       <div>
         <button
           className="hidden md:inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
-          onClick={() => setState({ settingsModalShowing: true })}
+          onClick={() => setState({ ...state, settingsModalShowing: true})}
         >
           Settings
         </button>
@@ -64,6 +65,59 @@ function Navbar({ auth, logoutUser }) {
     </div>
   );
 
+  const trayGuestLinks = (
+    <div className="w-full block flex-grow flex justify-center items-center w-auto">
+      <div>
+        <Link
+          to="/login"
+          className="inline-block text-sm px-4 py-2 leading-none border rounded text-teal-800 border-teal-800 hover:text-teal-500 hover:bg-white"
+          onClick={() => setState({ ...state, navTrayShowing: false})}
+          >
+          Login
+        </Link>
+      </div>
+      <div>
+        <Link
+          to="/register"
+          className="inline-block text-sm px-4 mx-4 py-2 leading-none border rounded text-teal-800 border-teal-800 hover:text-teal-500 hover:bg-white"
+          onClick={() => setState({ ...state, navTrayShowing: false})}
+        >
+          Register
+        </Link>
+      </div>
+    </div>
+  );
+
+  const trayAuthLinks = (
+    <div className="w-full block flex-grow flex justify-center items-center w-auto">
+      <div>
+        <button
+          className="inline-block text-sm px-4 py-2 leading-none border rounded text-teal-800 border-teal-800 hover:text-teal-500 hover:bg-white"
+          onClick={() => setState({ ...state, settingsModalShowing: true, navTrayShowing: false  })}
+        >
+          Settings
+        </button>
+      </div>
+      <div>
+        <button
+          className="inline-block text-sm px-4 mx-4 py-2 leading-none border rounded text-teal-800 border-teal-800 hover:text-teal-500 hover:bg-white"
+          onClick={() => {
+            setState({ ...state, navTrayShowing: false});
+            logoutUser();
+          }}
+        >
+          Logout
+        </button>
+      </div>
+    </div>
+  );
+
+  const navTray = (
+    <div className="md:hidden flex justify-center items-center w-full h-auto pb-3 pt-3 border rounded text-teal-800 bg-white">
+        {auth.isAuthenticated ? trayAuthLinks : trayGuestLinks}
+    </div>
+  )
+
   return (
     <div>
       <nav className="flex items-center justify-between flex-wrap bg-teal-800 p-4 border-transparent shadow-md">
@@ -78,7 +132,7 @@ function Navbar({ auth, logoutUser }) {
           </Link>
         </div>
         <div className="block md:hidden">
-          <button className="flex items-center px-3 py-2 border rounded text-teal-400 hover:text-white hover:border-white">
+          <button className="flex items-center px-3 py-2 border rounded text-teal-400 hover:text-white hover:border-white" onClick={() => setState({...state, navTrayShowing: !state.navTrayShowing})}>
             <svg
               className="fill-current h-3 w-3"
               viewBox="0 0 20 20"
@@ -91,6 +145,7 @@ function Navbar({ auth, logoutUser }) {
         </div>
         {auth.isAuthenticated ? authLinks : guestLinks}
       </nav>
+      {state.navTrayShowing && navTray}
       <EditUserModal
         show={state.settingsModalShowing}
         close={closeSettingsModalHandler}
