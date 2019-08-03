@@ -17,14 +17,14 @@ async function start() {
   // disable leaking info of what server we're using
   app.disable("x-powered-by");
 
-  // const serverUrl = `${config.PROTO}://${config.HOST}:${config.PORT}`;
+  const serverUrl = `${config.PROTO}://${config.HOST}:${config.PORT}`;
 
-  // const corsOptions = {
-  //   origin: ["http://localhost:3000", serverUrl, process.env.PROD_URL],
-  //   credentials: true
-  // };
+  const corsOptions = {
+    origin: ["http://localhost:3000", serverUrl, process.env.PROD_URL],
+    credentials: true
+  };
 
-  // app.use(cors(corsOptions));
+  app.use(cors(corsOptions));
 
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
@@ -62,6 +62,7 @@ async function start() {
   if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "public")));
     app.get("*", (req, res) => {
+      console.log(req)
       res.sendFile(path.resolve(__dirname, "public", "index.html"));
     });
   }
@@ -72,6 +73,7 @@ async function start() {
   } catch (err) {
     console.log(`Error connecting to db: ${err}`);
   }
+
 
   app.listen(config.PORT, err => {
     if (err) throw err;
