@@ -11,8 +11,8 @@
     "client-install": "npm install --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "restart": "rimraf dist && yarn build && yarn start",
-    "start": "node dist/index.js",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install && npm run build && npm install --prefix client && npm run build --prefix client"
+    "start": "DEBUG=express-session node dist/index.js",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install && npm run build && npm install --prefix client && npm run prod-build --prefix client"
   },
   "repository": {
     "type": "git",
@@ -70,7 +70,7 @@
     "cors": "^2.8.5",
     "cuid": "^2.1.6",
     "express": "^4.17.1",
-    "express-session": "^1.16.1",
+    "express-session": "^1.16.2",
     "lodash": "^4.17.15",
     "mongoose": "^5.6.6",
     "styled-components": "^4.3.2",

@@ -3,7 +3,6 @@ import session from "express-session";
 import bodyParser from "body-parser";
 import path from "path";
 import cors from "cors";
-import cookieParser from 'cookie-parser';
 
 import * as config from "./config/config";
 import { connect } from "./db";
@@ -29,8 +28,6 @@ async function start() {
 
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
-
-  app.use(cookieParser());
 
   let store = new MongoDBStore({
     uri: config.DB_URI,

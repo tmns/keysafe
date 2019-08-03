@@ -21,7 +21,9 @@
     "react-spinners-kit": "^1.9.0",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
-    "yup": "^0.27.0",
+    "yup": "^0.27.0"
+  },
+  "devDependencies": {
     "autoprefixer": "^9.6.1",
     "postcss-cli": "^6.1.3",
     "tailwindcss": "^1.0.5"
@@ -30,7 +32,8 @@
     "build:css": "postcss src/styles/index.css -o src/index.css",
     "watch:css": "postcss src/styles/index.css -o src/index.css -w",
     "start": "npm run watch:css & react-scripts start",
-    "build": "npm run build:css && react-scripts build && mv build ../dist/public",
+    "build": "npm run build:css && react-scripts build",
+    "prod-build": "react-scripts build && mv build ../dist/public",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
