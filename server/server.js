@@ -26,6 +26,15 @@ async function start() {
   // to force express to recognize connection as HTTPS and receive cookie with 'secure' set
   app.set("trust proxy", 1);
 
+  const serverUrl = `${config.PROTO}://${config.HOST}:${config.PORT}`;
+
+  const corsOptions = {
+    origin: ["http://localhost:3000", serverUrl, process.env.PROD_URL],
+    credentials: true
+  };
+
+  app.use(cors(corsOptions));
+
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
 
