@@ -63,9 +63,9 @@ async function start() {
     });
   }
 
-  app.listen(config.SERVER_PORT, err => {
+  app.listen(config.PORT, err => {
     if (err) throw err;
-    console.log(`> Running on localhost:${config.SERVER_PORT}`);
+    console.log(`> Running on localhost:${config.PORT}`);
   });
 }
 
