@@ -23,17 +23,14 @@ async function start() {
   // disable leaking info of what server we're using
   app.disable("x-powered-by");
 
-  // to force express to recognize connection as HTTPS and receive cookie with 'secure' set
-  app.set("trust proxy", 1);
+  // const serverUrl = `${config.PROTO}://${config.HOST}:${config.PORT}`;
 
-  const serverUrl = `${config.PROTO}://${config.HOST}:${config.PORT}`;
+  // const corsOptions = {
+  //   origin: ["http://localhost:3000", serverUrl, process.env.PROD_URL],
+  //   credentials: true
+  // };
 
-  const corsOptions = {
-    origin: ["http://localhost:3000", serverUrl, process.env.PROD_URL],
-    credentials: true
-  };
-
-  app.use(cors(corsOptions));
+  // app.use(cors(corsOptions));
 
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
@@ -60,6 +57,9 @@ async function start() {
       store
     })
   );
+
+  // to force express to recognize connection as HTTPS and receive cookie with 'secure' set
+  app.set("trust proxy", 1);
 
   app.use("/api/users", users);
   app.use("/api/groups", groups);

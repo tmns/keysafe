@@ -30,7 +30,7 @@
     "build:css": "postcss src/styles/index.css -o src/index.css",
     "watch:css": "postcss src/styles/index.css -o src/index.css -w",
     "start": "npm run watch:css & react-scripts start",
-    "build": "npm run build:css && react-scripts build",
+    "build": "npm run build:css && react-scripts build && mv build ../dist/public",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
