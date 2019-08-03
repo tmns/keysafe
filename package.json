@@ -12,7 +12,7 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "restart": "rimraf dist && yarn build && yarn start",
     "start": "node dist/index.js",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install && npm run build && npm install -g postcss-cli && npm install --prefix client && npm run build --prefix client"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install && npm run build && npm install -g postcss-cli tailwindcss autoprefixer && npm install --prefix client && npm run build --prefix client"
   },
   "repository": {
     "type": "git",
