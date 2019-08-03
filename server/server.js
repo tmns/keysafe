@@ -12,12 +12,6 @@ import groups from "./routes/api/groups";
 let MongoDBStore = require("connect-mongodb-session")(session);
 
 async function start() {
-  try {
-    await connect(config.DB_URL);
-  } catch (err) {
-    console.log(`Error connecting to db: ${err}`);
-  }
-
   const app = express();
 
   // disable leaking info of what server we're using
@@ -70,6 +64,13 @@ async function start() {
     app.get("*", (req, res) => {
       res.sendFile(path.resolve(__dirname, "public", "index.html"));
     });
+  }
+
+  // attempt to connect to db
+  try {
+    await connect(config.DB_URL);
+  } catch (err) {
+    console.log(`Error connecting to db: ${err}`);
   }
 
   app.listen(config.PORT, err => {
