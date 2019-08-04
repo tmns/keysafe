@@ -68,7 +68,7 @@ async function start() {
 
   // attempt to connect to db
   try {
-    await connect(config.DB_URL);
+    await connect(config.DB_URI);
   } catch (err) {
     console.log(`Error connecting to db: ${err}`);
   }
