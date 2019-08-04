@@ -45,7 +45,7 @@ async function start() {
       resave: true,
       saveUninitialized: false,
       cookie: {
-        secure: false,
+        secure: process.env.NODE_ENV != "production",
         maxAge: config.SESS_LIFETIME
       },
       store
