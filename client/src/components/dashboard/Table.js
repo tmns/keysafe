@@ -11,6 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import ls from 'local-storage';
+import CopyToClipboard from 'react-copy-to-clipboard';
 
 import EditGroupModal from "./EditGroupModal";
 import DelGroupModal from "./DelGroupModal";
@@ -219,13 +220,11 @@ function Table() {
                     <span className="">{key.username}</span>
                   </div>
                   <div className="w-1/3 text-center overflow-auto">
-                    <button
-                      onClick={async () => {
-                        await navigator.clipboard.writeText(key.password);
-                      }}
-                    >
-                      <FontAwesomeIcon icon={faCopy} />{" "}
-                    </button>
+                    <CopyToClipboard text={key.password}>
+                      <button>
+                        <FontAwesomeIcon icon={faCopy} />{" "}
+                      </button>
+                    </CopyToClipboard>
                     <button className="ml-6 md:ml-12">
                       <FontAwesomeIcon
                         icon={faPen}
