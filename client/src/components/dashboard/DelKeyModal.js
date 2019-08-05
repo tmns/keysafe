@@ -31,6 +31,11 @@ function DelKeyModal(props) {
 
                   const updatedKeys = props.keys.filter(key => key._id != props.keyId);
 
+                  // update groups object to keep track of correct key state
+                  const groupToUpdate = props.groups.filter(group => group._id == props.groupId)[0];
+                  groupToUpdate.keys = updatedKeys;
+                  props.setGroups(props.groups);
+
                   props.setKeys(updatedKeys);
                 } catch(err) {
                   console.log(err);

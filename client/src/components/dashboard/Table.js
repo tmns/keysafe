@@ -300,6 +300,8 @@ function Table() {
         show={state.delKeyModalShowing}
         close={closeDelKeyModalHandler}
         groupId={state.currentGroupId}
+        groups={groups}
+        setGroups={setGroups}
         keyId={state.currentKeyId}
         keys={keys}
         setKeys={setKeys}
