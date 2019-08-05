@@ -3,7 +3,7 @@ import axios from 'axios';
 async function checkIfLoggedIn() {
   let initialState;
   try {
-    const res = await axios.get('/api/users/current', { withCredentials: true });
+    const res = await axios.get('/api/users/current');
     initialState = {
       auth: {
         user: {
