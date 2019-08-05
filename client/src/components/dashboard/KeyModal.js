@@ -5,6 +5,8 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import ls from "local-storage";
+import generator from 'generate-password';
+
 import { encrypt, decrypt } from "../../util/crypto";
 
 const KeySchema = Yup.object().shape({
@@ -18,8 +20,13 @@ const KeySchema = Yup.object().shape({
     .required("Password is required")
 });
 
+function generatePassword() {
+  return generator.generate({ length: 24, numbers: true, symbols: true, uppercase: true, excludeSimilarCharacters: true });
+}
+
 function KeyModal(props) {
   const [seePwd, setSeePwd] = useState(false);
+  const [password, setPassword] = useState(generatePassword());
 
   return (
     <div
@@ -40,7 +47,7 @@ function KeyModal(props) {
               title: props.keyToEdit ? props.keyToEdit.title : "",
               url: props.keyToEdit ? props.keyToEdit.url : "",
               username: props.keyToEdit ? props.keyToEdit.username : "",
-              password: props.keyToEdit ? props.keyToEdit.password : ""
+              password: props.keyToEdit ? props.keyToEdit.password : password
             }}
             validationSchema={KeySchema}
             onSubmit={async (values, { setSubmitting }) => {
@@ -93,6 +100,7 @@ function KeyModal(props) {
               props.setKeys(res.data.keys);
               props.close();
               setSeePwd(false);
+              setPassword(generatePassword());
             }}
           >
             {({ errors, touched }) => (
@@ -161,6 +169,7 @@ function KeyModal(props) {
                     onClick={() => {
                       props.close();
                       setSeePwd(false);
+                      setPassword(generatePassword());
                     }}
                     type="button"
                   >

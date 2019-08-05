@@ -11,6 +11,7 @@
     "bcryptjs": "^2.4.3",
     "crypto-js": "^3.1.9-1",
     "formik": "^1.5.8",
+    "generate-password": "^1.4.2",
     "http-proxy-middleware": "^0.19.1",
     "local-storage": "^2.0.0",
     "react": "^16.8.6",

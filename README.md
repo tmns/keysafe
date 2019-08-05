@@ -16,6 +16,8 @@ Most of the main functionality has been completed. You can:
 - Edit key
 - Delete key
 
+Note that the app generates a random, strong password for you every time you use the add-a-key form - you can either use this password or enter your own.
+
 ## Encryption
 
 All data (group and key details) is encrypted client-side with symmetric key encryption (AES) before being stored in the database. The data is then decrypted client-side whenever it is retrieved. This is done with the help of `bcryptjs` and `crypto-js`. Further, the server is never sent your encryption / decryption key and as such cannot decrypt your data server-side (assuming the application code has not been maliciously altered). 
