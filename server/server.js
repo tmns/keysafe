@@ -73,11 +73,13 @@ async function start() {
     console.log(`Error connecting to db: ${err}`);
   }
 
-
-  app.listen(config.PORT, err => {
-    if (err) throw err;
-    console.log(`> Running on localhost:${config.PORT}`);
-  });
+  // attempt to bring up server
+  try {
+    await app.listen(config.PORT);
+    console.log(`> Server running on ${serverUrl}`);
+  } catch(err) {
+    console.log(`Error bringing up the server: ${err}`);
+  }  
 }
 
 export default start;

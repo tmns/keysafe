@@ -1,5 +1,7 @@
 export const {
   PORT = 4000,
+  PROTO = 'http',
+  HOST = 'localhost',
   DB_NAME = 'keySafeDB',
   DB_URI = 'mongodb://localhost:27017/keySafeDB',
   SESS_NAME = 'sessionId',
