@@ -6,5 +6,5 @@ export const {
   DB_URI = 'mongodb://localhost:27017/keySafeDB',
   SESS_NAME = 'sessionId',
   SESS_SECRET = 'test-secret',
-  SESS_LIFETIME = 1000 * 60 * 60
+  SESS_LIFETIME = 1000 * 60 * 60 * 24
 } = process.env;
