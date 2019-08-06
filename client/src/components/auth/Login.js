@@ -19,7 +19,9 @@ function Login({ history, loginUser, clearErrors, errorsFromServer }) {
       <h1 className="text-white text-center text-5xl font-thin py-10">Login</h1>
       {loading && Object.keys(errorsFromServer).length == 0 && (
         <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 text-center text-teal-800 text-md font-bd flex flex-col justify-center items-center">
-          <p className="mb-4">Generating security key and decrypting your data...</p>
+          <p className="mb-4">
+            Generating security key and decrypting your data...
+          </p>
           <SwapSpinner color="#198c8c" />
         </div>
       )}

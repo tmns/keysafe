@@ -10,14 +10,14 @@ import {
   faCopy
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import ls from 'local-storage';
-import CopyToClipboard from 'react-copy-to-clipboard';
+import ls from "local-storage";
+import CopyToClipboard from "react-copy-to-clipboard";
 
 import EditGroupModal from "./EditGroupModal";
 import DelGroupModal from "./DelGroupModal";
 import KeyModal from "./KeyModal";
-import DelKeyModal from './DelKeyModal';
-import { encrypt, decrypt } from '../../util/crypto';
+import DelKeyModal from "./DelKeyModal";
+import { encrypt, decrypt } from "../../util/crypto";
 
 const GroupNameSchema = Yup.object().shape({
   groupName: Yup.string()
@@ -45,8 +45,8 @@ function Table() {
   useEffect(() => {
     const getGroups = async () => {
       const res = await axios.get("/api/groups");
-      const edKey = ls.get('edKey');
-      
+      const edKey = ls.get("edKey");
+
       // if groups exist, decrypt their names and keys
       if (res.data.length != 0) {
         res.data.forEach(group => {
@@ -56,9 +56,9 @@ function Table() {
             key.url = decrypt(key.url, edKey);
             key.username = decrypt(key.username, edKey);
             key.password = decrypt(key.password, edKey);
-          })
-        })
-      } 
+          });
+        });
+      }
 
       setGroups(res.data);
     };
@@ -67,8 +67,8 @@ function Table() {
 
   async function handleGroupClick(e) {
     const groupId = e.target.value;
-    
-    setState({ ...state, currentGroupId: groupId })
+
+    setState({ ...state, currentGroupId: groupId });
 
     const selectedGroup = groups.filter(group => group._id == groupId)[0];
 
@@ -98,7 +98,10 @@ function Table() {
   return (
     <Fragment>
       <div className="w-full max-w-xs md:max-w-4xl bg-teal-700 mx-auto flex flex-col md:flex-row">
-        <div className="w-full md:w-1/4 flex-col bg-white mr-4 rounded shadow-md overflow-auto mb-4 md:mb-0" style={{maxHeight: '600px'}}>
+        <div
+          className="w-full md:w-1/4 flex-col bg-white mr-4 rounded shadow-md overflow-auto mb-4 md:mb-0"
+          style={{ maxHeight: "600px" }}
+        >
           <div>
             <h2 className="text-center pt-5 pb-3 border-b">Groups</h2>
           </div>
@@ -146,7 +149,7 @@ function Table() {
               validationSchema={GroupNameSchema}
               onSubmit={async value => {
                 // encrypt group name to store in db
-                const edKey = ls.get('edKey');
+                const edKey = ls.get("edKey");
                 const encGroupName = encrypt(value.groupName, edKey);
 
                 const res = await axios.post("/api/groups", {
@@ -194,7 +197,10 @@ function Table() {
             </button>
           </div>
         </div>
-        <div className="w-full md:w-3/4 flex-col bg-white rounded shadow-md overflow-auto" style={{maxHeight: '600px'}}>
+        <div
+          className="w-full md:w-3/4 flex-col bg-white rounded shadow-md overflow-auto"
+          style={{ maxHeight: "600px" }}
+        >
           <div className="flex pt-5 pb-3 border-b">
             <div className="w-1/3 text-center">
               <span className="">Title</span>
@@ -232,7 +238,7 @@ function Table() {
                           setState({
                             ...state,
                             keyModalShowing: true,
-                            keyAction: 'Edit',
+                            keyAction: "Edit",
                             currentKey: key
                           })
                         }
@@ -240,13 +246,13 @@ function Table() {
                     </button>
                     <button
                       className="ml-6 md:ml-12"
-                      onClick={() => setState(
-                        {
+                      onClick={() =>
+                        setState({
                           ...state,
                           delKeyModalShowing: true,
                           currentKeyId: key._id
-                        }
-                      )}
+                        })
+                      }
                     >
                       <FontAwesomeIcon icon={faTimes} />{" "}
                     </button>
@@ -255,20 +261,22 @@ function Table() {
               ))}
             </ul>
           </div>
-          {state.currentGroupId && <div className="p-4 w-full border-b text-center">
-            <button 
-              onClick={() =>
-                setState({
-                  ...state,
-                  keyModalShowing: true,
-                  keyAction: 'Add',
-                  currentKey: null
-                })
-              }
-            >
-              <FontAwesomeIcon icon={faPlus} />
-            </button>
-          </div>}
+          {state.currentGroupId && (
+            <div className="p-4 w-full border-b text-center">
+              <button
+                onClick={() =>
+                  setState({
+                    ...state,
+                    keyModalShowing: true,
+                    keyAction: "Add",
+                    currentKey: null
+                  })
+                }
+              >
+                <FontAwesomeIcon icon={faPlus} />
+              </button>
+            </div>
+          )}
         </div>
       </div>
       <EditGroupModal
