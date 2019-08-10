@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axios from "axios";
 
 async function checkIfLoggedIn() {
   let initialState;
   try {
-    const res = await axios.get('/api/users/current');
+    const res = await axios.get("/api/users/current");
     initialState = {
       auth: {
         user: {
@@ -12,14 +12,12 @@ async function checkIfLoggedIn() {
         },
         isAuthenticated: true
       }
-    }
+    };
   } catch (err) {
     initialState = {};
   }
-  
+
   return initialState;
 }
 
-export {
-  checkIfLoggedIn
-}
+export { checkIfLoggedIn };
