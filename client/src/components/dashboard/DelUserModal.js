@@ -26,7 +26,7 @@ function DelUserModal(props) {
           </h3>
         </div>
         <div className="text-center text-red-600 text-bold pt-2 px-5">
-          Are you sure you want to delete your account<br /> All your data will
+          Are you sure you want to delete your account?<br /> All your data will
           be permanently removed!
         </div>
         <div className="text-center pt-2">
