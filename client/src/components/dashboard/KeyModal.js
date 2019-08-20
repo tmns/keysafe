@@ -57,6 +57,7 @@ function KeyModal(props) {
             }}
             validationSchema={KeySchema}
             onSubmit={async (values, { setSubmitting }) => {
+              setSubmitting(true);
               // encrypt key data for storing in db
               const edKey = ls.get("edKey");
               const keyData = {
@@ -109,9 +110,10 @@ function KeyModal(props) {
               props.close();
               setSeePwd(false);
               setPassword(generatePassword());
+              setSubmitting(false);
             }}
           >
-            {({ errors, touched }) => (
+            {({ errors, touched, isSubmitting }) => (
               <Form>
                 <div className="border-b border-b-2 border-teal-500 py-2 w-1/2 mx-auto text-left">
                   <Field
@@ -186,6 +188,7 @@ function KeyModal(props) {
 
                   <button
                     className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-1/4"
+                    disabled={isSubmitting}
                     type="submit"
                   >
                     Save
