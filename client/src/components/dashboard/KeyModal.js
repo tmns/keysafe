@@ -5,7 +5,7 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import ls from "local-storage";
-import generator from 'generate-password';
+import generator from "generate-password";
 
 import { encrypt, decrypt } from "../../util/crypto";
 
@@ -21,7 +21,13 @@ const KeySchema = Yup.object().shape({
 });
 
 function generatePassword() {
-  return generator.generate({ length: 24, numbers: true, symbols: true, uppercase: true, excludeSimilarCharacters: true });
+  return generator.generate({
+    length: 24,
+    numbers: true,
+    symbols: true,
+    uppercase: true,
+    excludeSimilarCharacters: true
+  });
 }
 
 function KeyModal(props) {
@@ -92,7 +98,9 @@ function KeyModal(props) {
               }
 
               // update the groups object so items can be immediately edited and deleted if need be
-              const groupToUpdate = props.groups.filter(group => group._id == props.groupId)[0];
+              const groupToUpdate = props.groups.filter(
+                group => group._id == props.groupId
+              )[0];
 
               groupToUpdate.keys = res.data.keys;
               props.setGroups(props.groups);

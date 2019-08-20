@@ -26,15 +26,15 @@ function DelUserModal(props) {
           </h3>
         </div>
         <div className="text-center text-red-600 text-bold pt-2 px-5">
-          Are you sure you want to delete your account?<br /> All your data will
-          be permanently removed!
+          Are you sure you want to delete your account?
+          <br /> All your data will be permanently removed!
         </div>
         <div className="text-center pt-2">
           <Formik
             initialValues={{ password: "" }}
             validationSchema={DeleteUserSchema}
             onSubmit={async value => {
-              console.log(value)
+              console.log(value);
               try {
                 await axios.post("/api/users/authCheck", value);
                 await axios.delete("/api/users");

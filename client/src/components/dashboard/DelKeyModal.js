@@ -12,10 +12,13 @@ function DelKeyModal(props) {
     >
       <div className="bg-white rounded shadow-md h-64 mx-2 md:mx-0 w-full md:w-1/3">
         <div className="text-center">
-          <h3 className="text-red-600 text-bold m-0 p-5 text-2xl">Confirm Delete</h3>
+          <h3 className="text-red-600 text-bold m-0 p-5 text-2xl">
+            Confirm Delete
+          </h3>
         </div>
         <div className="text-center text-red-600 text-bold pt-2 px-5">
-          Are you sure you want to delete this key?<br></br> It will be permanently removed!
+          Are you sure you want to delete this key?<br /> It will be permanently
+          removed!
           <div className="bg-blue px-4 pt-8 text-center">
             <button
               className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-1/3 md:w-1/4 mr-4"
@@ -27,17 +30,23 @@ function DelKeyModal(props) {
               className="bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-1/3 md:w-1/4"
               onClick={async () => {
                 try {
-                  await axios.delete(`/api/groups/key/${props.groupId}/${props.keyId}`);
+                  await axios.delete(
+                    `/api/groups/key/${props.groupId}/${props.keyId}`
+                  );
 
-                  const updatedKeys = props.keys.filter(key => key._id != props.keyId);
+                  const updatedKeys = props.keys.filter(
+                    key => key._id != props.keyId
+                  );
 
                   // update groups object to keep track of correct key state
-                  const groupToUpdate = props.groups.filter(group => group._id == props.groupId)[0];
+                  const groupToUpdate = props.groups.filter(
+                    group => group._id == props.groupId
+                  )[0];
                   groupToUpdate.keys = updatedKeys;
                   props.setGroups(props.groups);
 
                   props.setKeys(updatedKeys);
-                } catch(err) {
+                } catch (err) {
                   console.log(err);
                 }
                 props.close();
