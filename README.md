@@ -2,7 +2,7 @@
 
 ![](./screens/dashboard.png)
 
-KeySafe is an app for storing all your passwords / keys. Designed to be as simple to use as possible. All data is encrypted client-side - so only you know what you're storing! Built with the help of React, Redux, Formik, Tailwind, Express / Node, Mongoose / MongoDB. You can give it a spin [here](https://keysafeapp.herokuapp.com).
+KeySafe is an app for storing all your passwords / keys. Designed to be as simple to use as possible. All data is encrypted client-side - so only you know what you're storing! Built with the help of React, Redux, Formik, Tailwind, Express / Node, Mongoose / MongoDB. You can give it a spin [here](https://keysafeapp.herokuapp.com). Note however, I use a free teir at Heroku so the initial start up time is pretty slow!
 
 Most of the main functionality has been completed. You can:
 
