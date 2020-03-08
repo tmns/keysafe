@@ -34,7 +34,6 @@ function DelUserModal(props) {
             initialValues={{ password: "" }}
             validationSchema={DeleteUserSchema}
             onSubmit={async value => {
-              console.log(value);
               try {
                 await axios.post("/api/users/authCheck", value);
                 await axios.delete("/api/users");
